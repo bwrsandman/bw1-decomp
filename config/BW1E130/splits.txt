@@ -1,7 +1,22 @@
 Sections:
 	.text       type:code align:4096
 	.rdata      type:rodata align:4096
+	.rdata$r    type:rodata vaddr:0x00A265E0 end:0x00A3C048
+	.xdata$x    type:rodata vaddr:0x00A3C048 end:0x00A45894
 	.data       type:data align:4096
+	.CRT$XCA    type:data vaddr:0x00A46000 end:0x00A46004
+	.CRT$XCU    type:data vaddr:0x00A46004 end:0x00A47E80
+	.CRT$XCZ    type:data vaddr:0x00A47E80 end:0x00A47E84
+	.CRT$XIA    type:data vaddr:0x00A47E84 end:0x00A47E88
+	.CRT$XIC    type:data vaddr:0x00A47E88 end:0x00A47E9C
+	.CRT$XIZ    type:data vaddr:0x00A47E9C end:0x00A47EA0
+	.CRT$XPA    type:data vaddr:0x00A47EA0 end:0x00A47EA4
+	.CRT$XPX    type:data vaddr:0x00A47EA4 end:0x00A47EA8
+	.CRT$XPZ    type:data vaddr:0x00A47EA8 end:0x00A47EAC
+	.CRT$XTA    type:data vaddr:0x00A47EAC end:0x00A47EB0
+	.CRT$XTX    type:data vaddr:0x00A47EB0 end:0x00A47EB4
+	.CRT$XTZ    type:data vaddr:0x00A47EB4 end:0x00A47EB8
+	.bss        type:data vaddr:0x00CBE000 end:0x01040FC0
 	.data1      type:data align:4096
 	SELFMOD     type:data align:4096
 	.rsrc       type:rodata align:4096
