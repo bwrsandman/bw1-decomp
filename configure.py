@@ -32,6 +32,7 @@ VERSIONS = [
     "BW1E100",  # 0   PE/COFF, Windows v1.0
     "BW1E110",  # 1   PE/COFF, Windows v1.1
     "BW1E120",  # 2   PE/COFF, Windows v1.2
+    "BW1E130",  # 3   PE/COFF, Windows v1.3
 ]
 
 parser = argparse.ArgumentParser()

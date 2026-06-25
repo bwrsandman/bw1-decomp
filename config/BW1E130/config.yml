@@ -1,0 +1,45 @@
+object_base: orig/BW1E130
+object: runblack-decrypted.exe
+hash: 46ce1c49ca0d2670d9f994858e9fb63e673ee608
+symbols: config/BW1E130/symbols.txt
+splits: config/BW1E130/splits.txt
+
+timestamp: "2003-03-06T21:30:42+00:00"
+force_size: 0x008C4000
+linker_version: "6.0"
+safe_disc_version: "2.80.11"
+size_of_code: 0x4B3000
+size_of_initialized_data: 0x799000
+size_of_image: 0xC4693E
+entry_export_addr: 0x00A45510
+entry_export_size: 0x365
+entry_import_addr: 0x00A3F968
+entry_import_size: 0x1CC
+entry_resource_addr: 0x01043000
+entry_resource_size: 0x38F8
+
+modules:
+- object: LHaudiodllR.dll
+  hash: 35f149cb77e9f770751112c0c814331c5b92bb4d
+  name: LHAudio
+  symbols: config/BW1E130/LHAudio/symbols.txt
+  splits: config/BW1E130/LHAudio/splits.txt
+
+- object: LHLogR.dll
+  hash: 3c42f20350da2c54eb1ba0a61829b94d9883669a
+  name: LHLog
+  linker_version: "7.0"
+  symbols: config/BW1E130/LHLog/symbols.txt
+  splits: config/BW1E130/LHLog/splits.txt
+
+- object: LHMultiplayerR.dll
+  hash: 4042119212fb6a5da6d736b059347f340eb4cd17
+  name: LHMultiplayer
+  symbols: config/BW1E130/LHMultiplayer/symbols.txt
+  splits: config/BW1E130/LHMultiplayer/splits.txt
+
+- object: LHDialogLib.dll
+  hash: 64a22b88a51adc4bc119777642263e419ea8d09e
+  name: LHDialog
+  symbols: config/BW1E130/LHDialog/symbols.txt
+  splits: config/BW1E130/LHDialog/splits.txt

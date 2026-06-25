@@ -94,8 +94,8 @@ def rich_header_size(records):
     return len(RICH_PREAMBLE) + len(records) * RICH_RECORD_SIZE + len(RICH_TRAILER)
 
 
-def pe_offset_after_rich_header(records):
-    return LLDLINK_STUB_SIZE + rich_header_size(records) + RICH_HEADER_PAD
+def pe_offset_after_rich_header(records, reserved_slots=RICH_HEADER_RESERVED_SLOTS):
+    return LLDLINK_STUB_SIZE + rich_header_size(records) + reserved_slots * RICH_RECORD_SIZE
 
 
 # Version-specific Rich header data, decoded from each original exe.
@@ -280,6 +280,22 @@ BW1E120_LHDIALOG_RICH_KEY = BW1E100_LHDIALOG_RICH_KEY
 BW1E120_LHDIALOG_RICH_SLOTS = BW1E100_LHDIALOG_RICH_SLOTS
 BW1E120_LHDIALOG_RICH_RECORDS = BW1E100_LHDIALOG_RICH_RECORDS
 
+BW1E130_LHAUDIO_RICH_KEY = BW1E120_LHAUDIO_RICH_KEY
+BW1E130_LHAUDIO_RICH_SLOTS = BW1E120_LHAUDIO_RICH_SLOTS
+BW1E130_LHAUDIO_RICH_RECORDS = BW1E120_LHAUDIO_RICH_RECORDS
+
+BW1E130_LHLOG_RICH_KEY = BW1E120_LHLOG_RICH_KEY
+BW1E130_LHLOG_RICH_SLOTS = BW1E120_LHLOG_RICH_SLOTS
+BW1E130_LHLOG_RICH_RECORDS = BW1E120_LHLOG_RICH_RECORDS
+
+BW1E130_LHMULTIPLAYER_RICH_KEY = BW1E120_LHMULTIPLAYER_RICH_KEY
+BW1E130_LHMULTIPLAYER_RICH_SLOTS = BW1E120_LHMULTIPLAYER_RICH_SLOTS
+BW1E130_LHMULTIPLAYER_RICH_RECORDS = BW1E120_LHMULTIPLAYER_RICH_RECORDS
+
+BW1E130_LHDIALOG_RICH_KEY = BW1E120_LHDIALOG_RICH_KEY
+BW1E130_LHDIALOG_RICH_SLOTS = BW1E120_LHDIALOG_RICH_SLOTS
+BW1E130_LHDIALOG_RICH_RECORDS = BW1E120_LHDIALOG_RICH_RECORDS
+
 
 # Rich header write helpers
 
@@ -410,11 +426,21 @@ def apply_BW1_common_patch(pe, cfg):
     pe.OPTIONAL_HEADER.BaseOfData = find_section_header(pe, '.rdata').get_PointerToRawData_adj()
 
 
-def apply_intel_strings(pe, cfg):
-    # Weird leaked icc compiler strings for certain files  that were compiled with icc
-    write_bytes(pe, 0x390, b"Intel(R) C++ Compiler for 32-bit applications, Version 5.0 Build 001120  : C:\\Dev\\libs\\LIONHEAD\\LH3DLIB\\DEVELOPMENT\\LH3DP3.cpp : -Qvc6 -Qlocation,link,C:\\Program Files\\Microsoft Visual Studio\\VC98\\bin -nologo -G6 -MT -W3 -GX -Zi -O2 -Ob1 -D NDEBUG -D _LH_LIB_RELEASE -D WIN32 -D _WINDOWS -D _LH_3D_LIB_ -D _GOLD -D _GOLD_ -D _USE_INTEL_COMPILER -FAcs -FaGold/ -FoGold/ -FdGold/ -FD -QxiW -G7 -c"[24:])
-    write_bytes(pe, 0x503, b"Intel(R) C++ Compiler for 32-bit applications, Version 5.0.1 Beta  Build 010214Z  : cpu_disp.c : -I../ -Zl -Zp8 -DVX -DWMT -DMULTI_THREADED -Focpu_disp_mt.obj -c")
-    write_bytes(pe, 0x5a5, b"Intel(R) C++ Compiler for 32-bit applications, Version 5.0 Beta  Build 001024  : C:\\PROJECTS\\MathTest\\AMaths.c : -Qvc6 -Qlocation,link,C:\\Program Files\\Microsoft Visual Studio\\VC98\\bin -nologo -G6 -ML -W3 -GX -O2 -D WIN32 -D NDEBUG -D _WINDOWS -D _USE_INTEL_COMPILER -D _KATMAI_STEP_B -FpRelease/AMaths.pch -YX -FoRelease/ -FdRelease/ -FD -QxiMKW -c")
+def apply_intel_strings(pe, cfg, start=0x390, head=24):
+    # Weird leaked icc compiler strings for files that were compiled with icc.
+    # They sit as consecutive NUL-separated strings in the header gap, so only the
+    # first string's start offset and leading length vary by version; the rest pack
+    # in right after it. 1.30: the gap is +8 (larger Rich header) and its first
+    # string drops 8 more leading bytes, so start=0x3A0, head=32.
+    strings = [
+        b"Intel(R) C++ Compiler for 32-bit applications, Version 5.0 Build 001120  : C:\\Dev\\libs\\LIONHEAD\\LH3DLIB\\DEVELOPMENT\\LH3DP3.cpp : -Qvc6 -Qlocation,link,C:\\Program Files\\Microsoft Visual Studio\\VC98\\bin -nologo -G6 -MT -W3 -GX -Zi -O2 -Ob1 -D NDEBUG -D _LH_LIB_RELEASE -D WIN32 -D _WINDOWS -D _LH_3D_LIB_ -D _GOLD -D _GOLD_ -D _USE_INTEL_COMPILER -FAcs -FaGold/ -FoGold/ -FdGold/ -FD -QxiW -G7 -c"[head:],
+        b"Intel(R) C++ Compiler for 32-bit applications, Version 5.0.1 Beta  Build 010214Z  : cpu_disp.c : -I../ -Zl -Zp8 -DVX -DWMT -DMULTI_THREADED -Focpu_disp_mt.obj -c",
+        b"Intel(R) C++ Compiler for 32-bit applications, Version 5.0 Beta  Build 001024  : C:\\PROJECTS\\MathTest\\AMaths.c : -Qvc6 -Qlocation,link,C:\\Program Files\\Microsoft Visual Studio\\VC98\\bin -nologo -G6 -ML -W3 -GX -O2 -D WIN32 -D NDEBUG -D _WINDOWS -D _USE_INTEL_COMPILER -D _KATMAI_STEP_B -FpRelease/AMaths.pch -YX -FoRelease/ -FdRelease/ -FD -QxiMKW -c",
+    ]
+    off = start
+    for s in strings:
+        write_bytes(pe, off, s)
+        off += len(s) + 1   # +1 NUL separator (left as the linker's zero)
 
 
 def apply_BW1E100_patch_safedisc_cleaner(pe):
@@ -509,6 +535,62 @@ def apply_BW1E120_patch(pe, cfg, out_dir, modules):
     apply_modules_patch(out_dir, cfg, modules)
 
 
+BW1E130_RICH_KEY = 0x10EE403D   # extracted from original exe at offset 0x134
+BW1E130_RICH_RECORDS = [
+    RichRecord(RichProductID.UTC12_C,      8168,   1),
+    RichRecord(RichProductID.UTC12_C,      8447,  23),
+    RichRecord(RichProductID.UTC70_CPP,    9178,   1),
+    RichRecord(RichProductID.ALIAS_OBJ,    7291,  14),
+    RichRecord(RichProductID.MASM613,      7299,  43),
+    RichRecord(RichProductID.UTC70_C,      9178,   1),
+    RichRecord(RichProductID.IMPORT_VS2002, 9210,  6),
+    RichRecord(RichProductID.UTC12_C,      8799,  35),
+    RichRecord(RichProductID.UTC12_CPP,    8799,   7),
+    RichRecord(RichProductID.UTC12_CPP,    8047,  26),
+    RichRecord(RichProductID.UTC12_C,      8047, 202),
+    RichRecord(RichProductID.UTC12_CPP,    8168,  12),
+    RichRecord(RichProductID.LINKER600,    8168,   2),
+    RichRecord(RichProductID.LINKER600SP5, 8034,  21),
+    RichRecord(RichProductID.IMPORT,          0, 588),
+    RichRecord(RichProductID.UTC12_CPP,    8447,   2),
+    RichRecord(RichProductID.CVTRES,       1735,   1),
+    RichRecord(RichProductID.UTC12_CPP,    8966, 645),
+    RichRecord(RichProductID.IMPORT_OLD,      0,   7),
+    RichRecord(RichProductID.LINKER600,    8447,  28),
+]
+
+
+BW1E130_RICH_SLOTS = 2   # 1.30's link.exe used 2 reserved Rich slots (others use 3)
+
+
+def apply_BW1E130_patch_safedisc_cleaner(pe):
+    # 4-byte marker immediately before IMAGE_NT_HEADERS.
+    # First 2 bytes are version-specific; 1.30's cleaner signature is 0x2DAD
+    # (1.00/1.10/1.20 use 0x2BAD).
+    marker = bytes([0x0D, 0x00]) + (0x2DAD).to_bytes(2, 'big')
+    write_bytes(pe, pe_offset_after_rich_header(BW1E130_RICH_RECORDS, BW1E130_RICH_SLOTS) - 4, marker)
+
+
+def apply_BW1E130_patch(pe, cfg, out_dir, modules):
+    apply_patch_safedisc(pe, cfg)
+    apply_BW1E130_patch_safedisc_cleaner(pe)
+    apply_BW1_common_patch(pe, cfg)
+    apply_intel_strings(pe, cfg, start=0x3A0, head=32)
+
+    # SafeDisc2Cleaner easter egg (1.20 wrote "crazy bad bwoy" at 0x340 instead)
+    write_bytes(pe, 0x350, b'Myth / Deviance ')
+
+    # This version has an existing but deleted debug directory
+    patch_directory(pe, 'IMAGE_DIRECTORY_ENTRY_DEBUG', 0x008ae9c0, 0x1c)
+
+    apply_modules_patch(out_dir, cfg, modules)
+
+
+# Main-exe Rich header reserved-slot count (zero padding dwords after the trailer,
+# before IMAGE_NT_HEADERS). link.exe used 3 for 1.00/1.10/1.20 but 2 for 1.30.
+MAIN_RICH_SLOTS = {"BW1E130": BW1E130_RICH_SLOTS}
+
+
 PATCHES = {
     "BW1E100": (BW1E100_RICH_KEY, BW1E100_RICH_RECORDS, apply_BW1E100_patch, {
         "LHAudio":       (BW1E100_LHAUDIO_RICH_KEY,       BW1E100_LHAUDIO_RICH_RECORDS,       BW1E100_LHAUDIO_RICH_SLOTS),
@@ -522,12 +604,17 @@ PATCHES = {
         "LHMultiplayer": (BW1E110_LHMULTIPLAYER_RICH_KEY, BW1E110_LHMULTIPLAYER_RICH_RECORDS, BW1E110_LHMULTIPLAYER_RICH_SLOTS),
         "LHDialog":      (BW1E110_LHDIALOG_RICH_KEY,      BW1E110_LHDIALOG_RICH_RECORDS,      BW1E110_LHDIALOG_RICH_SLOTS),
     }),
-    "BW1E120": (BW1E120_RICH_KEY, BW1E120_RICH_RECORDS, apply_BW1E120_patch, {}),
     "BW1E120": (BW1E120_RICH_KEY, BW1E120_RICH_RECORDS, apply_BW1E120_patch, {
         "LHAudio":       (BW1E120_LHAUDIO_RICH_KEY,       BW1E120_LHAUDIO_RICH_RECORDS,       BW1E120_LHAUDIO_RICH_SLOTS),
         "LHLog":         (BW1E120_LHLOG_RICH_KEY,         BW1E120_LHLOG_RICH_RECORDS,         BW1E120_LHLOG_RICH_SLOTS),
         "LHMultiplayer": (BW1E120_LHMULTIPLAYER_RICH_KEY, BW1E120_LHMULTIPLAYER_RICH_RECORDS, BW1E120_LHMULTIPLAYER_RICH_SLOTS),
         "LHDialog":      (BW1E120_LHDIALOG_RICH_KEY,      BW1E120_LHDIALOG_RICH_RECORDS,      BW1E120_LHDIALOG_RICH_SLOTS),
+    }),
+    "BW1E130": (BW1E130_RICH_KEY, BW1E130_RICH_RECORDS, apply_BW1E130_patch, {
+        "LHAudio":       (BW1E130_LHAUDIO_RICH_KEY,       BW1E130_LHAUDIO_RICH_RECORDS,       BW1E130_LHAUDIO_RICH_SLOTS),
+        "LHLog":         (BW1E130_LHLOG_RICH_KEY,         BW1E130_LHLOG_RICH_RECORDS,         BW1E130_LHLOG_RICH_SLOTS),
+        "LHMultiplayer": (BW1E130_LHMULTIPLAYER_RICH_KEY, BW1E130_LHMULTIPLAYER_RICH_RECORDS, BW1E130_LHMULTIPLAYER_RICH_SLOTS),
+        "LHDialog":      (BW1E130_LHDIALOG_RICH_KEY,      BW1E130_LHDIALOG_RICH_RECORDS,      BW1E130_LHDIALOG_RICH_SLOTS),
     }),
 }
 
@@ -590,6 +677,7 @@ def main():
     args = parser.parse_args()
 
     rich_key, rich_records, apply_safedisc, modules = PATCHES[args.version]
+    rich_slots = MAIN_RICH_SLOTS.get(args.version, RICH_HEADER_RESERVED_SLOTS)
 
     cfg_path  = Path("config") / args.version / "config.yml"
     cfg       = yaml.safe_load(cfg_path.read_text())
@@ -601,7 +689,7 @@ def main():
     data = bytearray(args.input.read_bytes())
     pe   = pefile.PE(data=data)
 
-    insert_rich_header(pe, rich_key, rich_records)
+    insert_rich_header(pe, rich_key, rich_records, rich_slots)
     zero_code_section_padding(pe)
     apply_safedisc(pe, cfg, out.parent, modules)
 

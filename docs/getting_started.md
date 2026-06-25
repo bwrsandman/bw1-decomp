@@ -9,6 +9,7 @@ See [Dependencies](dependencies.md) first.
    - `orig/BW1E100/runblack-decrypted.exe` — Windows v1.0 (decrypted)
    - `orig/BW1E110/runblack-decrypted.exe` — Windows v1.1 (decrypted)
    - `orig/BW1E120/runblack-decrypted.exe` — Windows v1.2 (decrypted)
+   - `orig/BW1E130/runblack-decrypted.exe` — Windows v1.3 (decrypted)
    - `orig/BW1EMAC/Black & White` — Classic Mac OS PEF binary
 
    The Windows builds expect a **decrypted** exe. The original retail discs ship the executable wrapped in SafeDisc 2 / Macrovision protection. Use the SafeDisc cleaner referenced in the project notes to produce `runblack-decrypted.exe`.
