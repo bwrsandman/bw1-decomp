@@ -1,14 +1,49 @@
 object_base: orig/BW1W120
 name: runblack
-object: ../../build/BW1W120/runblack-preprocessed.exe
-hash: e554d46de745e604c05d7e3607b2f4ec61e8c063
+object: ../../build/BW1W120/runblack-decrypted.exe
+hash: 9c09bfe04c0991c4f5b9e6e2bd58807146218a3a
 symbols: config/BW1W120/symbols.txt
 splits: config/BW1W120/splits.txt
 
+# SafeDisc key material, used by the pre-split decrypt step
+# (tools/decrypt_safedisc.py) to unwrap orig/BW1W120/runblack.exe into
+# the `object` above. Stripped from dtk's copy of this file, which is generated
+# into build/BW1W120/config.yml -- dtk has no field for it and never needs one.
+#
+# These keys are useless without your own copy of that executable, whose SHA-1 is
+# pinned below: decrypting one build with another build's keys does not fail
+# loudly, it produces a plausible-looking file full of noise, so the pin is
+# enforced rather than advisory.
+#
+# The entry point is NOT key material and is not stored here -- it is read from
+# symbols.txt (_WinMainCRTStartup) above. See docs/transformations.md.
+#
+# 2.60 uses an AES-driven CFB-8 stream cipher re-keyed twice per section, so each
+# encrypted section needs three session keys (32/24/16 bytes, one per keystream
+# generator) plus one 16-byte keystream register shared by both. The stolen-import
+# key is not listed because it IS .data's generator-C key, and is derived.
+#
+# Provenance: Safedisc2Cleaner project, BW1E120/README.md and BW1E120/DECRYPTING.md.
+safedisc:
+  profile: sd260           # SafeDisc 2.60.052 -- AES CFB-8, encrypted import table
+  expect_sha1: c9bba68e17f5ec162ff235a496779f43090508db
+  keys:
+    iv: 82828282c9c9c9c97d7d7d7dfafafafa
+    sections:
+      .text:
+        - 4e91191d987ae440613f022c120abadee96bca11e42cf3c4d80634c8b00aaddb
+        - ef347524013134a1abd3ecaf887389da6d406baccbf8e6bf
+        - 4e3fdabb89ee343a6ac67a2a81ebff7e
+      .data:
+        - aaadd479965a1b2ba3e7788457fc3109eac56f3f112af637d7861333e1c20cc7
+        - fb5f5e34260cf3ee4e064809747d4eea7571f115cf76f5bb
+        - aa5f6f5c70d6d762167a37c086772f0c
+
 timestamp: "2002-06-18T06:13:22+00:00"
-force_size: 0x00843000
+# End of the CodeView NB10 record, which is where link.exe stopped writing.
+# SafeDisc2Cleaner used to cut the file 0x2f bytes earlier, orphaning it.
+force_size: 0x0084302F
 linker_version: "6.0"
-safe_disc_version: "2.60.52"
 size_of_code: 0x4AE000
 size_of_initialized_data: 0x71D000
 size_of_image: 0xBC6000

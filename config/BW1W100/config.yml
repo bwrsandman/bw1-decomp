@@ -1,24 +1,52 @@
 object_base: orig/BW1W100
 name: runblack
-object: ../../build/BW1W100/runblack-preprocessed.exe
-hash: d810fe43e2956f2b76533ab698632756ba99b44d
+object: ../../build/BW1W100/runblack-decrypted.exe
+hash: d4f0d9381642e1a935df2f47bde8e76c13c2c79a
 symbols: config/BW1W100/symbols.txt
 splits: config/BW1W100/splits.txt
+
+# SafeDisc key material, used by the pre-split decrypt step
+# (tools/decrypt_safedisc.py) to unwrap orig/BW1W100/runblack.exe into
+# the `object` above. Stripped from dtk's copy of this file, which is generated
+# into build/BW1W100/config.yml -- dtk has no field for it and never needs one.
+#
+# These keys are useless without your own copy of that executable, whose SHA-1 is
+# pinned below: decrypting one build with another build's keys does not fail
+# loudly, it produces a plausible-looking file full of noise, so the pin is
+# enforced rather than advisory.
+#
+# The entry point is NOT key material and is not stored here -- it is read from
+# symbols.txt (_WinMainCRTStartup) above. See docs/transformations.md.
+#
+# Provenance: recovered by live capture against the running SafeDisc loader; see
+# the Safedisc2Cleaner project's BW1E100/README.md.
+safedisc:
+  profile: sd2tea          # SafeDisc 2.10.030 -- SDS-BPT + TEA-32 section cipher
+  expect_sha1: 85dc3180803153162a46d43433f8dcaa883af02c
+  keys:
+    tea: b21c6272ae991792224dca028ab1b783
+
 dead_strip: true
 # The original 1.0 link used /OPT:REF, which only collects COMDATs. Until the
 # reference graph is fully recovered, keep function sections plain so it cannot
 # strip code nothing has been shown to reach yet.
 function_comdat: false
 # map: orig/BW1W1001/files/runblack.map
-force_size: 0x0081b58f
+# The real link time, recovered from the disc image. SafeDisc2Cleaner used to
+# overwrite this field with its author's handle ('eYes').
+timestamp: "2001-03-09T14:56:38+00:00"
+# End of the last section: 1.0 shipped no debug directory and no CodeView
+# record, so this is where link.exe stopped. The old value carried SafeDisc's
+# whole appended payload.
+force_size: 0x00763000
 linker_version: "6.0"
-safe_disc_version: "2.10.30"
 # TODO: Unsure why we get 0x3EA000
 size_of_code: 0x3EE800
 # TODO: Unsure why we get 0x378000
 size_of_initialized_data: 0x6FA000
-# TODO: Unsure why we get 0xAE5000
-size_of_image: 0xAE493E
+# Section-aligned, as link.exe computes it. The old 0xAE493E was SafeDisc's
+# mangled value -- lld-link's 0xAE5000 was right all along.
+size_of_image: 0xAE5000
 # TODO: Unsure why we get 0
 entry_export_addr: 0x008f4f60
 # TODO: Unsure why we get 0

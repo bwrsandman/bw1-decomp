@@ -217,15 +217,16 @@ _patched = f"build/{config.version}/runblack.exe"
 _modules = ["LHAudio", "LHLog", "LHMultiplayer", "LHDialog"]
 _module_linked = [f"build/{config.version}/{m}-linked.dll" for m in _modules]
 _module_patched = [f"build/{config.version}/{m}.dll" for m in _modules]
-# Pre-split normalization: strip SafeDisc/decryptor vandalism from the source
-# exe so dtk/lld see pristine linker output (see docs/transformations.md).
-_decrypted = f"orig/{config.version}/runblack-decrypted.exe"
-_preprocessed = f"build/{config.version}/runblack-preprocessed.exe"
+# Pre-split decryption: unwrap the SafeDisc image straight off the disc and
+# restore the pristine linker header shape, so dtk/lld only ever see linker
+# output and no third-party-decrypted exe is needed (docs/transformations.md).
+_encrypted = f"orig/{config.version}/runblack.exe"
+_decrypted = f"build/{config.version}/runblack-decrypted.exe"
 config.custom_build_rules = [
     {
-        "name": "predtk",
-        "command": f"$python tools/pre_dtk_patch.py $in $out",
-        "description": "PREDTK $out",
+        "name": "decrypt",
+        "command": f"$python tools/decrypt_safedisc.py --version {config.version} $in $out",
+        "description": "DECRYPT $out",
     },
     {
         "name": "postpatch",
@@ -243,10 +244,17 @@ _patch_stamp = f"build/{config.version}/patched_compiler_headers"
 config.custom_build_steps = {
     "pre-split": [
         {
-            "outputs": _preprocessed,
-            "rule": "predtk",
-            "inputs": _decrypted,
-            "implicit": ["tools/pre_dtk_patch.py"],
+            "outputs": _decrypted,
+            "rule": "decrypt",
+            "inputs": _encrypted,
+            "implicit": [
+                "tools/decrypt_safedisc.py",
+                # Holds the `safedisc:` key material.
+                str(config.config_path),
+                # The entry point is read out of the symbol table rather than
+                # carried as key material, so a change there must re-decrypt.
+                f"config/{config.version}/symbols.txt",
+            ],
         },
     ],
     "pre-compile": [

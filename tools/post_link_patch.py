@@ -85,20 +85,11 @@ MSVC6_E_CP       = 3       # hardcoded in MSVC 6.0 pre-compiled DOS stub binary
 MSVC6_E_MAXALLOC = 0xFFFF  # max heap paragraphs; MSVC sets to the maximum
 MSVC6_E_SP       = 0x00B8  # hardcoded in MSVC 6.0 pre-compiled DOS stub binary
 
-# SafeDisc2Cleaner v1.20 writes a marker 4 bytes before IMAGE_NT_HEADERS.
-# The last 2 bytes are its signature: 0x2BAD is leet for "too bad".
-SAFEDISC_CLEANER_SIGNATURE = (0x2BAD).to_bytes(2, 'big')
-
-# Per-title dword stamped at the end of the SafeDisc mastering tail tag (see
-# exe_tail_tag): constant across all four B&W masterings, differs per title
-# (MechWarrior 4 has a different value).
-SAFEDISC_TITLE_STAMP = 0x81444BA5
-
 # Two timestamps per shipped image: the link time the debug directory records,
-# and the .pdb creation time in the CodeView record it names. SafeDisc Cleaner
-# overwrote the PE header's copy of 1.10's link time with its author handle (see
-# apply_BW1W110_patch_safedisc_cleaner), leaving the debug directory as the only
-# place it survives; 1.20's is the same instant as config.yml's timestamp.
+# and the .pdb creation time in the CodeView record it names. Both are now also
+# in config.yml's timestamp, recovered from the disc image -- SafeDisc2Cleaner
+# used to overwrite the PE header's copy of 1.00's and 1.10's link time with its
+# author handle, leaving the debug directory as the only place 1.10's survived.
 BW1W110_LINK_TIME = datetime.fromisoformat('2001-06-26T15:07:58+00:00')
 BW1W110_PDB_TIME = datetime.fromisoformat('2001-06-04T14:50:17+00:00')
 BW1W120_LINK_TIME = datetime.fromisoformat('2002-06-18T06:13:22+00:00')
@@ -119,10 +110,6 @@ __CV_INFO_PDB20_format__ = ('CV_INFO_PDB20', [
 
 def rich_header_size(records):
     return len(RICH_PREAMBLE) + len(records) * RICH_RECORD_SIZE + len(RICH_TRAILER)
-
-
-def pe_offset_after_rich_header(records):
-    return LLDLINK_STUB_SIZE + rich_header_size(records) + RICH_HEADER_PAD
 
 
 # Version-specific Rich header data, decoded from each original exe.
@@ -390,16 +377,9 @@ def zero_code_section_padding(pe):
             write_bytes(pe, pad_start, b'\x00' * (pad_end - pad_start))
 
 
-# SafeDisc2Cleaner artifacts. These are breadcrumbs written by the decryption tool,
-# not original linker output. Isolated here for future removal once decryption is
-# handled offline as a pre-analysis step.
-def apply_patch_safedisc(pe, cfg):
-    # SafeDisc protection magic also written into the header padding.
-    write_bytes(pe, 0x0FD4, b'BoG_ *90.0&!!  Yy>')
-    # Safedisc version
-    safe_disc_version = cfg.get("safe_disc_version").split(".")
-    write_bytes(pe, 0x0FF4, struct.pack('<3I', *map(int, safe_disc_version)))
-    # The original compilation date
+def apply_link_time(pe, cfg):
+    # The original compilation date. lld-link stamps its own; config.yml carries
+    # the one the disc image holds.
     timestamp = cfg.get("timestamp")
     if timestamp:
         pe.FILE_HEADER.TimeDateStamp = int(datetime.fromisoformat(timestamp).timestamp())
@@ -436,8 +416,8 @@ def apply_BW1_common_patch(pe, cfg):
 
     # Once the import table is carved into real .idata$N sub-sections, lld-link's
     # locateImportTables() sets DataDirectory[IAT] from our .idata$5 chunk. The
-    # SafeDisc decryptor zeroed this directory in the decrypted image we match
-    # against, so re-zero it here. (No-op for versions not yet carved.)
+    # shipped image leaves this directory zero, so re-zero it here. (No-op for
+    # versions not yet carved.)
     iat_dir = find_directory(pe, 'IMAGE_DIRECTORY_ENTRY_IAT')
     iat_dir.VirtualAddress = 0
     iat_dir.Size = 0
@@ -445,12 +425,6 @@ def apply_BW1_common_patch(pe, cfg):
     # Point to .rdata
     # TODO: Why is this set to 0?
     pe.OPTIONAL_HEADER.BaseOfData = find_section_header(pe, '.rdata').get_PointerToRawData_adj()
-
-
-# Two section headers SafeDisc inserts after the section table.
-SAFEDISC_SECTION_BUMP = 0x50
-# Bytes zeroed off the front of the first exestr comment.
-EXESTR_PREFIX_ERASE = 24
 
 
 def section_table_end(pe):
@@ -468,76 +442,13 @@ def insert_header_padding(pe, at, count):
     pe.__data__[at:at + count] = b'\x00' * count
 
 
-def apply_BW1W100_patch_safedisc_cleaner(pe):
-    # SafeDisc2Cleaner wrote its author handle into the COFF timestamp field.
-    pe.FILE_HEADER.TimeDateStamp = int.from_bytes(b'eYes', 'little')
-    # 4-byte marker immediately before IMAGE_NT_HEADERS.
-    # First 2 bytes are version-specific; last 2 are the 0x2BAD "too bad" signature.
-    write_bytes(pe, pe_offset_after_rich_header(BW1W100_RICH_RECORDS) - 4, bytes([0x0C, 0x00]) + SAFEDISC_CLEANER_SIGNATURE)
-    # Author credit string in the header padding area (between section table and .text).
-    write_bytes(pe, 0x0310, b'Safedisc2Cleaner (c) bOOls eYe, waste_me & r!sc boolseye.cjb.net')
-
-
-def apply_BW1W110_patch_safedisc_cleaner(pe):
-    # SafeDisc2Cleaner wrote its author handle into the COFF timestamp field.
-    pe.FILE_HEADER.TimeDateStamp = int.from_bytes(b'eYes', 'little')
-    # 4-byte marker immediately before IMAGE_NT_HEADERS.
-    # First 2 bytes are version-specific; last 2 are the 0x2BAD "too bad" signature.
-    write_bytes(pe, pe_offset_after_rich_header(BW1W110_RICH_RECORDS) - 4, bytes([0x0D, 0x00]) + SAFEDISC_CLEANER_SIGNATURE)
-    # Author credit string in the header padding area (between section table and .text).
-    write_bytes(pe, 0x0340, b'Safedisc2Cleaner (c) bOOls eYe, waste_me & r!sc boolseye.cjb.net')
-
-
-def apply_BW1W120_patch_safedisc_cleaner(pe):
-    # 4-byte marker immediately before IMAGE_NT_HEADERS.
-    # First 2 bytes are version-specific; last 2 are the 0x2BAD "too bad" signature.
-    write_bytes(pe, pe_offset_after_rich_header(BW1W120_RICH_RECORDS) - 4, bytes([0x0D, 0x00]) + SAFEDISC_CLEANER_SIGNATURE)
-
-
-def exe_tail_tag(build_field):
-    """45-byte SafeDisc mastering tag appended at link.exe's true EOF.
-
-    Sits immediately after the CodeView NB10 record in 1.10/1.20/1.30, and at
-    the page where that record would start in 1.00 (shipped with debug info
-    stripped); zero-padded to the next 0x1000 page, after which the SafeDisc
-    payload begins.
-
-    Written by the SafeDisc mastering step, not the linker: the unprotected LH
-    DLLs from the same machines end byte-exact at their NB10 records, while the
-    same tag (same template, different field values) appears in other SafeDisc
-    2.x titles (verified against MechWarrior 4, SafeDisc 2.30.033). The ASCII
-    fragments and the sprintf'd pointer string are a frozen template carried by
-    the tool across at least versions 2.10-2.60, with two stamped fields:
-      - build_field: differs on every mastering run (per-run nonce/serial?);
-      - trailing dword: per-title -- 0x81444BA5 in all four B&W masterings
-        across two years, a different value in MW4.
-    Exact meaning of the stamped values unknown; the tag appears in no public
-    SafeDisc documentation.
-    """
-    return (
-        b'_ii.../..000000_'
-        b'!!!'
-        + struct.pack('<I', build_field)
-        + b'hhs_____'
-        + b'0x622958ac'                   # frozen in the tool's template
-        + struct.pack('<I', SAFEDISC_TITLE_STAMP)
-    )
-
-
-def linker_eof(pe):
-    """File offset where link.exe's output ends: right after the last section's
-    raw data. The CodeView NB10 record (and the SafeDisc tail tag after it) is
-    appended here."""
-    return max(s.PointerToRawData + s.SizeOfRawData for s in pe.sections)
-
-
 def write_codeview_record(pe, at, pdb_creation_time: datetime, age, pdb_path):
     """Write the CV_INFO_PDB20 record the debug directory points at.
 
     MSVC 6 leaves it at the end of the file, outside any section, so `at` is the
-    linker's EOF -- the same place the SafeDisc tail tag that follows it starts.
-    Returns the record's length, which is what the debug directory reports as
-    SizeOfData.
+    linker's EOF: right after the last section's raw data, and the last thing
+    link.exe writes. Returns the record's length, which is what the debug
+    directory reports as SizeOfData.
     """
     cv = pefile.Structure(__CV_INFO_PDB20_format__)
     cv.CvSignature = b'NB10'
@@ -587,67 +498,34 @@ def restore_debug_directory(pe, at, link_time: datetime, cv_offset, cv_size):
     entry.PointerToRawData = cv_offset
 
 
-def write_exe_tail_tag(pe, build_field):
-    # The tag sits at link.exe's true EOF: right after the CodeView NB10 record
-    # when one is present, directly after the section data otherwise.
-    at = linker_eof(pe)
-    if bytes(pe.__data__[at:at + 4]) == b'NB10':
-        at = pe.__data__.index(b'\x00', at + 16) + 1  # skip header + pdb path
-    write_bytes(pe, at, exe_tail_tag(build_field))
-
-
 def apply_BW1W100_patch(pe, cfg, out_dir, modules):
-    apply_patch_safedisc(pe, cfg)
-    apply_BW1W100_patch_safedisc_cleaner(pe)
+    apply_link_time(pe, cfg)
     apply_BW1_common_patch(pe, cfg)
-    write_exe_tail_tag(pe, 0x23fe0b3f)
     apply_modules_patch(out_dir, cfg, modules)
 
 
 def apply_BW1W110_patch(pe, cfg, out_dir, modules):
-    ste = section_table_end(pe)
-    insert_header_padding(pe, ste, SAFEDISC_SECTION_BUMP)
-    write_bytes(pe, ste + SAFEDISC_SECTION_BUMP, b'\x00' * EXESTR_PREFIX_ERASE)
-
-    apply_patch_safedisc(pe, cfg)
-    apply_BW1W110_patch_safedisc_cleaner(pe)
+    apply_link_time(pe, cfg)
     apply_BW1_common_patch(pe, cfg)
 
     # CodeView record pointing at the .pdb, and the debug directory naming it.
     cv_size = write_codeview_record(pe, 0x00832000, BW1W110_PDB_TIME, 0x10,
                                     'C:\\dev\\Black\\Gold\\Black.pdb')
     restore_debug_directory(pe, 0x008999c0, BW1W110_LINK_TIME, 0x00832000, cv_size)
-    write_exe_tail_tag(pe, 0x75e1f353)
 
     apply_modules_patch(out_dir, cfg, modules)
 
 
 def apply_BW1W120_patch(pe, cfg, out_dir, modules):
-    # Bump the exestr comments past SafeDisc's section headers, then re-apply the
-    # decryptor's prefix erasure. Runs before the artifacts below so they land at
-    # their final offsets.
-    ste = section_table_end(pe)
-    insert_header_padding(pe, ste, SAFEDISC_SECTION_BUMP)
-    write_bytes(pe, ste + SAFEDISC_SECTION_BUMP, b'\x00' * EXESTR_PREFIX_ERASE)
-
-    apply_patch_safedisc(pe, cfg)
-    apply_BW1W120_patch_safedisc_cleaner(pe)
+    apply_link_time(pe, cfg)
     apply_BW1_common_patch(pe, cfg)
 
-    # Different safedisc decryptor easter egg
-    # https://www.beatport.com/nl/track/crazy-bad-bwoy/682050
-    write_bytes(pe, 0x00000340, bytes(b' crazy bad bwoy '))
-
-    # What the shipped exe held past the last section, before SafeDisc Cleaner cut
-    # the file at 0x843000 (see force_size), orphaning the debug directory above.
-    # Both writes land beyond force_size, so the trim below cuts them straight
-    # back off; they are kept because the debug directory still has to report the
-    # record's size and offset, and to keep this reconstruction of the shipped
-    # tail identical to 1.10's, where nothing is trimmed and both survive.
+    # CodeView record pointing at the .pdb, and the debug directory naming it.
+    # SafeDisc2Cleaner used to cut the file at 0x843000, orphaning this record;
+    # the disc image keeps it, so force_size now runs to its end instead.
     cv_size = write_codeview_record(pe, 0x00843000, BW1W120_PDB_TIME, 0xC,
                                     'C:\\dev\\MP\\Black\\Gold\\Black.pdb')
     restore_debug_directory(pe, 0x008a99c0, BW1W120_LINK_TIME, 0x00843000, cv_size)
-    write_exe_tail_tag(pe, 0x872ec8b7)
 
     apply_modules_patch(out_dir, cfg, modules)
 
@@ -732,7 +610,7 @@ def main():
     parser.add_argument("--version", required=True, choices=list(PATCHES), help="Game version")
     args = parser.parse_args()
 
-    rich_key, rich_records, apply_safedisc, modules = PATCHES[args.version]
+    rich_key, rich_records, apply_version_patch, modules = PATCHES[args.version]
 
     cfg_path  = Path("config") / args.version / "config.yml"
     cfg       = yaml.safe_load(cfg_path.read_text())
@@ -746,13 +624,12 @@ def main():
 
     insert_rich_header(pe, rich_key, rich_records)
     zero_code_section_padding(pe)
-    apply_safedisc(pe, cfg, out.parent, modules)
+    apply_version_patch(pe, cfg, out.parent, modules)
 
     data[:] = pe.write()
     if force_size:
-        # 1.00/1.10 ship zero padding past the tail tag; 1.20's copy was instead
-        # truncated here by SafeDisc Cleaner, cutting the CodeView record and the
-        # tail tag back off.
+        # Where link.exe stopped writing: the end of the CodeView record on
+        # 1.10/1.20, the end of the last section on 1.00.
         print(f"size is {hex(len(data))}, forcing to {hex(force_size)}")
         data = data[:force_size] + b'\0' * (force_size - len(data))
     pe.close()

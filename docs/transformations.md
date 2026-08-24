@@ -1,26 +1,32 @@
 # Binary transformations
 
-The shipped executable is MSVC 6.0 linker output wrapped by SafeDisc, then run
-through a third-party decryptor. Neither the SafeDisc wrapping nor the decryptor
-graffiti is linker output, so the build strips it before splitting and
-reproduces it after linking. dtk and lld-link only ever see pristine linker
-output.
+The shipped executable is MSVC 6.0 linker output wrapped by SafeDisc. The build
+starts from the disc image and unwraps it itself, so nothing that is not linker
+output ever reaches dtk or lld-link, and no third-party-decrypted exe is needed.
 
 ```
-orig/<ver>/runblack-decrypted.exe        third-party-decrypted, vandalized
-  │  pre_dtk_patch.py   (pre-split step)
+orig/<ver>/runblack.exe                  the disc image, SafeDisc-wrapped
+  │  decrypt_safedisc.py   (pre-split step: sd2unpack + header restoration)
   ▼
-build/<ver>/runblack-preprocessed.exe    pristine linker shape
+build/<ver>/runblack-decrypted.exe       pristine linker shape; the target
   │  dtk coff split  →  objs  →  lld-link
   ▼
 build/<ver>/runblack-linked.exe          pristine linker output, debuggable
   │  post_link_patch.py   (post-link step)
   ▼
-build/<ver>/runblack.exe                 byte-identical to the source
+build/<ver>/runblack.exe                 byte-identical to runblack-decrypted.exe
 ```
 
-Both patch scripts are wired through the standard `custom_build_steps` hooks in
+Both scripts are wired through the standard `custom_build_steps` hooks in
 `configure.py` (`pre-split` and `post-link`).
+
+The build used to start from a `runblack-decrypted.exe` produced by
+SafeDisc2Cleaner, and `post_link_patch.py` had to reproduce that tool's
+vandalism to match it. Working from the disc image removes all of it: the
+graffiti, the truncated exestr comment, the `eYes` timestamp, SafeDisc's
+sections and its appended payload. What is left is closer to what link.exe
+emitted, so several fields that used to need an override no longer do -- see
+*What the disc image recovered* below.
 
 ## Header layout
 
@@ -31,34 +37,52 @@ the string **flush after the section table** in the header padding (verified:
 gap 0). Nothing in the PE references it — it is free-floating bytes inside
 `SizeOfHeaders`.
 
-SafeDisc and the decryptor then rearrange that region:
+SafeDisc rearranges that region:
 
 ```
 link.exe:   [section table][comment flush]
 SafeDisc:   inserts 2 section headers (stxt774, stxt371 = 2*40 = 0x50) after the
             section table, shoving the comment forward 0x50
-decryptor:  removes those 2 headers (zeroing the 0x50), writes a cracker
-            signature into the freed space, and over-zeros the first 24 bytes of
-            the first comment when wiping it
 ```
 
-So on the decrypted exe the first comment is truncated (`Intel(R) C++ Compiler
-fo` gone, `r 32-bit…` survives), preceded by cracker graffiti; the encrypted
-disc image still has the full strings intact.
+The comment strings themselves are untouched on the disc image. (The old
+SafeDisc2Cleaner route also removed those two headers, wrote a cracker signature
+into the freed space, and over-zeroed the first 24 bytes of the first comment,
+which is why `pre_dtk_patch.py` used to carry that prefix as a hardcoded
+constant. None of that survives the move to the disc image.)
 
-## pre_dtk_patch.py (decrypted → preprocessed)
+1.0 has no exestr comments at all — its header padding held nothing but
+SafeDisc's own stamp.
 
-Restores the pristine linker shape:
+## decrypt_safedisc.py (encrypted → decrypted)
 
-- zeroes the whole header padding (`section_table_end … SizeOfHeaders`), wiping
-  the cracker graffiti (`crazy bad bwoy`, `Safedisc2Cleaner …`, `BoG_`, etc.);
-- restores the first comment's 24-byte prefix (hardcoded — the decrypted exe no
-  longer has it; a future decryptor working from the encrypted image would carry
-  it through);
-- writes the full comments flush after the section table.
+Runs [sd2unpack](https://github.com/openblack/Safedisc2Cleaner) over the disc
+image, then restores the pristine linker shape.
 
-Comments are identified by content (`32-bit applications`), so graffiti and
-unrelated markers are never mistaken for them.
+sd2unpack decrypts `.text`/`.data`, recovers the hidden (and, on 2.60,
+encrypted) import directory, restores the real entry point, drops SafeDisc's own
+sections (`.data1`, `SELFMOD`, `stxt774`, `stxt371`), strips the `BoG_` version
+stamp and truncates the appended SafeDisc payload.
+
+Everything that varies per build is either derived from inputs already in the
+repository or read from the `safedisc:` block in `config/<ver>/config.yml`:
+
+- the real entry point comes from `config/<ver>/symbols.txt`
+  (`_WinMainCRTStartup`) — SafeDisc records it nowhere in the file, but the
+  decomp has always known where the program starts, so it is not carried as key
+  material;
+- the image base, section layout and which sections are encrypted come from the
+  encrypted executable's own headers;
+- the section cipher keys come from that `safedisc:` block, which pins the SHA-1 of the
+  executable they belong to. Decrypting one build with another's keys does not
+  fail loudly, so that pin is enforced, not advisory.
+
+The header restoration then moves the exestr comments back flush against the
+section table. Dropping `.data1` and `SELFMOD` makes the section table two
+headers (0x50) shorter, and the comments sit flush against its end, so they land
+at `0x4002D8` instead of the `0x400328` the old six-section reference had.
+Comments are identified by content (`32-bit applications`), so SafeDisc's markers
+are never mistaken for them.
 
 ## dtk / lld-link
 
@@ -66,7 +90,7 @@ The comment range is declared in `splits.txt` like any other segment:
 
 ```
 Sections:
-	.drectve    type:comment vaddr:0x00400328 end:0x004006B2
+	.drectve    type:comment vaddr:0x004002D8 end:0x00400662
 ```
 
 dtk reads it (`read_splits_sections`), extracts the bytes from the header
@@ -76,16 +100,20 @@ each string flush after the section table, matching link.exe.
 
 ## post_link_patch.py (linked → decrypted)
 
-Reproduces everything the wrapping/decryptor did, at their final offsets:
+Reproduces what link.exe emitted and lld-link does not:
 
 - inserts the Rich header (`insert_rich_header`), shifting the PE header and the
   free-floating comment bytes forward;
-- inserts the 0x50 SafeDisc bump after the section table so the comments land at
-  their decrypted offset, then re-applies the decryptor's 24-byte prefix erasure;
-- writes the cracker graffiti and SafeDisc markers.
+- restamps the link time from `config.yml`'s `timestamp`;
+- fixes up header fields and data directories lld-link computes differently
+  (`apply_BW1_common_patch`);
+- writes the CodeView record and debug directory on 1.10/1.20.
 
-The Intel comment strings are no longer hardcoded here — they flow from the
-objects through lld-link.
+The Intel comment strings are not hardcoded here — they flow from the objects
+through lld-link. Nothing SafeDisc- or cracker-related is written any more: the
+0x50 bump, the 24-byte prefix erasure, the `BoG_` stamp, the version dwords, the
+`0x2BAD` marker, the `Safedisc2Cleaner …` and ` crazy bad bwoy ` strings and the
+45-byte mastering tail tag are all gone, along with the `eYes` timestamp.
 
 ## Debug directory
 
@@ -119,9 +147,31 @@ debug directory is 0 on its own output and on 1.30, 0xC on LHMultiplayerR.dll,
 but 0x18 on the 1.10/1.20 executables. Absorbing it into `.idata$5` sidesteps
 needing the rule.
 
+## What the disc image recovered
+
+Fields where the SafeDisc2Cleaner copy was wrong and the disc image is not, all
+now visible in `config/<ver>/config.yml`:
+
+| | 1.00 | 1.10 | 1.20 |
+|---|---|---|---|
+| link timestamp | `2001-03-09T14:56:38Z` | `2001-06-26T15:07:58Z` | unchanged |
+| `size_of_image` | `0xAE5000` (was `0xAE493E`) | `0xBB5000` (was `0xBB493E`) | unchanged |
+| `force_size` | `0x763000` (was `0x81B58F`) | `0x83202C` (was `0x902A0B`) | `0x84302F` (was `0x843000`) |
+
+The two timestamps had been overwritten with the cleaner's author handle
+(`eYes`); 1.10's recovered value matches `BW1W110_LINK_TIME` in
+`post_link_patch.py`, which was read out of the surviving debug directory —
+independent confirmation. The `size_of_image` values are now section-aligned, as
+link.exe computes them; the old unaligned ones were SafeDisc's. The 1.00/1.10
+`force_size` values used to carry SafeDisc's entire appended payload, and 1.20's
+cut the file 0x2F bytes short, orphaning the CodeView record the debug directory
+points at.
+
 ## SHA verification
 
-- `orig/<ver>/runblack-decrypted.exe` — source of truth, checked by `build.sha1`.
-- `build/<ver>/runblack-preprocessed.exe` — deterministic; checked by dtk against
-  `config.yml`'s `hash` (the split input).
-- `build/<ver>/runblack.exe` — final output, checked by `build.sha1`.
+- `orig/<ver>/runblack.exe` — the disc image, checked by `build.sha1`
+  and pinned again by `config.yml`'s `safedisc.expect_sha1`.
+- `build/<ver>/runblack-decrypted.exe` — the target; deterministic, checked by
+  `build.sha1` and by dtk against `config.yml`'s `hash` (the split input).
+- `build/<ver>/runblack.exe` — final output, checked by `build.sha1` against the
+  same hash as the target.

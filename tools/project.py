@@ -1870,7 +1870,7 @@ def generate_build_ninja(
         if build_config and extracted in lib_extracted_added:
             lib_object_paths.append(extracted)
     # Rewrite the top-level `object:` to a lexically-absolute path. The source
-    # config points it at the preprocessed exe via `../../build/...`, which dtk
+    # config points it at the decrypted exe via `../../build/...`, which dtk
     # joins onto `object_base` and resolves *physically*; when `orig` is a symlink
     # (e.g. pointing at a shared build store) that climb escapes the repo. Using
     # os.path.abspath normalizes `..` lexically (without following symlinks) so the
@@ -1883,8 +1883,23 @@ def generate_build_ninja(
         if m:
             object_base = m.group(1)
             break
+    # Drop the `safedisc:` block. It is key material for the pre-split decrypt
+    # step (tools/decrypt_safedisc.py), not something dtk knows about, and by
+    # the time dtk runs it has already served its purpose -- the exe it names is
+    # decrypted. Keeping it out of dtk's copy means dtk never has to tolerate a
+    # key it has no field for.
     rewritten = []
+    in_safedisc = False
     for line in lines:
+        if in_safedisc:
+            # The block ends at the next line that starts in column 0.
+            if line.strip() and not line[0].isspace() and not line.lstrip().startswith("#"):
+                in_safedisc = False
+            else:
+                continue
+        if re.match(r"safedisc:\s*(#.*)?$", line):
+            in_safedisc = True
+            continue
         m = re.match(r"(object:\s*)(\S+)(.*)", line)
         if m and not os.path.isabs(m.group(2)):
             abs_object = os.path.abspath(os.path.join(object_base, m.group(2)))

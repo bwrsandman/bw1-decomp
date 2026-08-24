@@ -5,6 +5,7 @@ Required on every host:
 
 - [Python 3](https://www.python.org/downloads/)
 - [ninja](https://github.com/ninja-build/ninja/releases) (or `pip install ninja`)
+- `sd2unpack`, from [openblack/Safedisc2Cleaner](https://github.com/openblack/Safedisc2Cleaner) — unwraps the SafeDisc-protected exe off your disc as a pre-split step. Build it with `cd sd2unpack && cargo build --release` (no crate dependencies, no network beyond the clone), then put it on `PATH` or point `$SD2UNPACK` at the binary; a checkout next to this repository is found automatically. Only needed for the Windows targets.
 
 Everything else is downloaded automatically by `configure.py` on first run:
 

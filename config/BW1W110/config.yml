@@ -1,19 +1,44 @@
 object_base: orig/BW1W110
 name: runblack
-object: ../../build/BW1W110/runblack-preprocessed.exe
-hash: ef763f2b88488d1099ca50379a1b9c904c316c0c
+object: ../../build/BW1W110/runblack-decrypted.exe
+hash: c7e34845637aef6b4521a3ded937a28b1ec997b3
 symbols: config/BW1W110/symbols.txt
 splits: config/BW1W110/splits.txt
-# TODO: Unsure why we get 0x832000, probably because of decryptor
-force_size: 0x00902a0b
+
+# SafeDisc key material, used by the pre-split decrypt step
+# (tools/decrypt_safedisc.py) to unwrap orig/BW1W110/runblack.exe into
+# the `object` above. Stripped from dtk's copy of this file, which is generated
+# into build/BW1W110/config.yml -- dtk has no field for it and never needs one.
+#
+# These keys are useless without your own copy of that executable, whose SHA-1 is
+# pinned below: decrypting one build with another build's keys does not fail
+# loudly, it produces a plausible-looking file full of noise, so the pin is
+# enforced rather than advisory.
+#
+# The entry point is NOT key material and is not stored here -- it is read from
+# symbols.txt (_WinMainCRTStartup) above. See docs/transformations.md.
+#
+# Provenance: Safedisc2Cleaner project, BW1E110/README.md.
+safedisc:
+  profile: sd2tea          # SafeDisc 2.30.033 -- SDS-BPT + TEA-32 section cipher
+  expect_sha1: 3c7297dae357834860ff46a89ca5d1a552747100
+  keys:
+    tea: 40628063c34bb1d8f53b77f831ff40a0
+# The real link time, recovered from the disc image. SafeDisc2Cleaner used to
+# overwrite this field with its author's handle ('eYes').
+timestamp: "2001-06-26T15:07:58+00:00"
+# End of the CodeView NB10 record, which is where link.exe stopped writing --
+# the 0x832000 we produce plus its 0x2c. The old value ran to 0x902a0b because
+# the source exe still carried SafeDisc's whole appended payload.
+force_size: 0x0083202C
 linker_version: "6.0"
-safe_disc_version: "2.30.33"
 # TODO: Unsure why we get 0x49d000
 size_of_code: 0x49d000
 # TODO: Unsure why we get 0x71c000
 size_of_initialized_data: 0x71c000
-# TODO: Unsure why we get 0xbb493e
-size_of_image: 0xbb493e
+# Section-aligned, as link.exe computes it. The old 0xBB493E was SafeDisc's
+# mangled value.
+size_of_image: 0xBB5000
 # TODO: Unsure why we get a wrong value
 entry_export_addr: 0x009b4f30
 # TODO: Unsure why we get a wrong value

@@ -25,7 +25,6 @@ Sections:
 	.CRT$XTB    type:data vaddr:0x008F758C end:0x008F7590
 	.CRT$XTZ    type:data vaddr:0x008F7590 end:0x008F7594
 	.bss        type:data vaddr:0x00B5E000 end:0x00EDFB00
-	SELFMOD     type:data align:4096
 	.rsrc       type:rodata align:4096
 
 lib/libcmt/crt0init.obj:

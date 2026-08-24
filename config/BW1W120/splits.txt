@@ -25,10 +25,8 @@ Sections:
 	.CRT$XTB    type:data vaddr:0x009C7E6C end:0x009C7E70
 	.CRT$XTZ    type:data vaddr:0x009C7E70 end:0x009C7E74
 	.bss        type:bss vaddr:0x00C3C680 end:0x00FBFE00
-	.data1      type:data align:4096
-	SELFMOD     type:data align:4096
 	.rsrc       type:rodata align:4096
-	.drectve    type:comment vaddr:0x00400328 end:0x00400555
+	.drectve    type:comment vaddr:0x004002D8 end:0x00400505
 
 lib/libcmt/crt0init.obj:
 	.CRT$XCA    start:0x009C6000 end:0x009C6004 align:4
@@ -3668,7 +3666,7 @@ lib/amaths/AMaths.obj:
 	.text       start:0x008A2770 end:0x008A5030 align:1
 	.data       start:0x00C3C240 end:0x00C3C680
 	.bss        start:0x00FAC860 end:0x00FAC880
-	.drectve    type:comment start:0x00400555 end:0x004006B2
+	.drectve    type:comment start:0x00400505 end:0x00400662
 
 lib/libcmt/wcsdup.obj:
 	.text       start:0x008A5B0C end:0x008A5B3A align:1

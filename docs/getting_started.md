@@ -6,14 +6,23 @@ See [Dependencies](dependencies.md) first.
 
 2. Place the original game executable **and its DLLs** in `orig/<VERSION>/`. The path inside `orig` matches the version ID in [`configure.py`](/configure.py).
 
-   - `orig/BW1W100/runblack-decrypted.exe` — Windows v1.0 (decrypted)
-   - `orig/BW1W110/runblack-decrypted.exe` — Windows v1.1 (decrypted)
-   - `orig/BW1W120/runblack-decrypted.exe` — Windows v1.2 (decrypted)
+   - `orig/BW1W100/runblack.exe` — Windows v1.0, exactly as it ships
+   - `orig/BW1W110/runblack.exe` — Windows v1.1, exactly as it ships
+   - `orig/BW1W120/runblack.exe` — Windows v1.2, exactly as it ships
    - `orig/BW1M100/Black & White` — Classic Mac OS v1.0.0 PEF binary
 
    The Windows builds also need the four DLLs shipped alongside the exe, in the same directory: `LHaudiodllR.dll`, `LHLogR.dll`, `LHMultiplayerR.dll`, `LHDialogLib.dll` (copy these from your own install — the build checks all five files' hashes against `config/<VERSION>/build.sha1` and fails at the split step with a clear "not found" message naming whichever one is missing).
 
-   The Windows builds expect a **decrypted** exe. The original retail discs ship the executable wrapped in SafeDisc 2 / Macrovision protection. Decrypting it is currently undocumented tribal knowledge — if you don't already have a decrypted copy, ask in the project's Discord/issue tracker rather than guessing at a tool name.
+   The Windows exe is the **SafeDisc-wrapped** one straight off your disc or install, copied in under its own name — no decryption on your part, nothing to rename, nothing to hunt down. The build unwraps it itself as a pre-split step (see [Binary transformations](transformations.md)); the key material lives in the `safedisc:` block of `config/<VERSION>/config.yml` and the entry point is read out of `symbols.txt`.
+
+   That step needs **sd2unpack**, from the [Safedisc2Cleaner](https://github.com/openblack/Safedisc2Cleaner) repository. It is a dependency-free Rust crate:
+
+   ```sh
+   git clone https://github.com/openblack/Safedisc2Cleaner
+   cd Safedisc2Cleaner/sd2unpack && cargo build --release
+   ```
+
+   Put the resulting `target/release/sd2unpack` on your `PATH`, or point `$SD2UNPACK` at it. A checkout sitting next to this repository is also found automatically.
 
 3. Place the MSVC 6.0 static CRT libraries and the DirectX 7.0 SDK headers under `orig/` (they are not committed and not downloaded).
 
@@ -90,10 +99,10 @@ If the SHA-1 check passes, the rebuilt binary is byte-identical to the original.
 
 Each version lives under `config/<VERSION>/`:
 
-- `config.yml` — project config, points at the original binary and the `splits.txt` / `symbols.txt` files for that version
+- `config.yml` — project config: points at the original binary and the `splits.txt` / `symbols.txt` files for that version, and carries the `safedisc:` block (profile and section cipher keys) used to unwrap the disc image
 - `splits.txt` — assigns address ranges to source files (see [`splits.txt`](splits.md))
 - `symbols.txt` — names and types every symbol in the binary (see [`symbols.txt`](symbols.md))
-- `build.sha1` — expected SHA-1 of the original (and, eventually, the rebuilt) binary
+- `build.sha1` — expected SHA-1 of the disc image, the unwrapped target, and the rebuilt binary
 
 ## Decompilation workflow
 
