@@ -1,7 +1,7 @@
 object_base: orig/BW1W110
 name: runblack
 object: ../../build/BW1W110/runblack-decrypted.exe
-hash: c7e34845637aef6b4521a3ded937a28b1ec997b3
+hash: 9e7ca8b1c8f5ea4721a2571f351cbb5fdc7dff4f
 symbols: config/BW1W110/symbols.txt
 splits: config/BW1W110/splits.txt
 
@@ -28,17 +28,18 @@ safedisc:
 # overwrite this field with its author's handle ('eYes').
 timestamp: "2001-06-26T15:07:58+00:00"
 # End of the CodeView NB10 record, which is where link.exe stopped writing --
-# the 0x832000 we produce plus its 0x2c. The old value ran to 0x902a0b because
+# the 0x830000 we produce plus its 0x2c. The old value ran to 0x902a0b because
 # the source exe still carried SafeDisc's whole appended payload.
-force_size: 0x0083202C
+force_size: 0x0083002C
 linker_version: "6.0"
 # TODO: Unsure why we get 0x49d000
 size_of_code: 0x49d000
 # TODO: Unsure why we get 0x71c000
 size_of_initialized_data: 0x71c000
 # Section-aligned, as link.exe computes it. The old 0xBB493E was SafeDisc's
-# mangled value.
-size_of_image: 0xBB5000
+# mangled value, and 0xBB5000 still counted the two sections SafeDisc had
+# inserted ahead of .rsrc.
+size_of_image: 0xBB3000
 # TODO: Unsure why we get a wrong value
 entry_export_addr: 0x009b4f30
 # TODO: Unsure why we get a wrong value

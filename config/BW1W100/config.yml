@@ -1,7 +1,7 @@
 object_base: orig/BW1W100
 name: runblack
 object: ../../build/BW1W100/runblack-decrypted.exe
-hash: d4f0d9381642e1a935df2f47bde8e76c13c2c79a
+hash: a245ac14417621b0452b243f1756bba56c36e22a
 symbols: config/BW1W100/symbols.txt
 splits: config/BW1W100/splits.txt
 
@@ -38,15 +38,16 @@ timestamp: "2001-03-09T14:56:38+00:00"
 # End of the last section: 1.0 shipped no debug directory and no CodeView
 # record, so this is where link.exe stopped. The old value carried SafeDisc's
 # whole appended payload.
-force_size: 0x00763000
+force_size: 0x00762000
 linker_version: "6.0"
 # TODO: Unsure why we get 0x3EA000
 size_of_code: 0x3EE800
 # TODO: Unsure why we get 0x378000
 size_of_initialized_data: 0x6FA000
 # Section-aligned, as link.exe computes it. The old 0xAE493E was SafeDisc's
-# mangled value -- lld-link's 0xAE5000 was right all along.
-size_of_image: 0xAE5000
+# mangled value, and 0xAE5000 still counted the SELFMOD page SafeDisc had
+# inserted ahead of .rsrc.
+size_of_image: 0xAE4000
 # TODO: Unsure why we get 0
 entry_export_addr: 0x008f4f60
 # TODO: Unsure why we get 0

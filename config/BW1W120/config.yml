@@ -1,7 +1,7 @@
 object_base: orig/BW1W120
 name: runblack
 object: ../../build/BW1W120/runblack-decrypted.exe
-hash: 9c09bfe04c0991c4f5b9e6e2bd58807146218a3a
+hash: b29217628891a8d323dcd90d76013a7975e3e7f0
 symbols: config/BW1W120/symbols.txt
 splits: config/BW1W120/splits.txt
 
@@ -42,16 +42,18 @@ safedisc:
 timestamp: "2002-06-18T06:13:22+00:00"
 # End of the CodeView NB10 record, which is where link.exe stopped writing.
 # SafeDisc2Cleaner used to cut the file 0x2f bytes earlier, orphaning it.
-force_size: 0x0084302F
+# 0x2000 below the address SafeDisc used: it had inserted .data1 and SELFMOD
+# ahead of .rsrc, and the decrypt step now closes that hole.
+force_size: 0x0084102F
 linker_version: "6.0"
 size_of_code: 0x4AE000
 size_of_initialized_data: 0x71D000
-size_of_image: 0xBC6000
+size_of_image: 0xBC4000
 entry_export_addr: 0x009c51e0
 entry_export_size: 0x365
 entry_import_addr: 0x009bf6e8
 entry_import_size: 0x1B8
-entry_resource_addr: 0x00fc2000
+entry_resource_addr: 0x00fc0000
 entry_resource_size: 0x38F8
 
 modules:

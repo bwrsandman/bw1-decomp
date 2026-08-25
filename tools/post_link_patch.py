@@ -509,9 +509,9 @@ def apply_BW1W110_patch(pe, cfg, out_dir, modules):
     apply_BW1_common_patch(pe, cfg)
 
     # CodeView record pointing at the .pdb, and the debug directory naming it.
-    cv_size = write_codeview_record(pe, 0x00832000, BW1W110_PDB_TIME, 0x10,
+    cv_size = write_codeview_record(pe, 0x00830000, BW1W110_PDB_TIME, 0x10,
                                     'C:\\dev\\Black\\Gold\\Black.pdb')
-    restore_debug_directory(pe, 0x008999c0, BW1W110_LINK_TIME, 0x00832000, cv_size)
+    restore_debug_directory(pe, 0x008999c0, BW1W110_LINK_TIME, 0x00830000, cv_size)
 
     apply_modules_patch(out_dir, cfg, modules)
 
@@ -523,9 +523,9 @@ def apply_BW1W120_patch(pe, cfg, out_dir, modules):
     # CodeView record pointing at the .pdb, and the debug directory naming it.
     # SafeDisc2Cleaner used to cut the file at 0x843000, orphaning this record;
     # the disc image keeps it, so force_size now runs to its end instead.
-    cv_size = write_codeview_record(pe, 0x00843000, BW1W120_PDB_TIME, 0xC,
+    cv_size = write_codeview_record(pe, 0x00841000, BW1W120_PDB_TIME, 0xC,
                                     'C:\\dev\\MP\\Black\\Gold\\Black.pdb')
-    restore_debug_directory(pe, 0x008a99c0, BW1W120_LINK_TIME, 0x00843000, cv_size)
+    restore_debug_directory(pe, 0x008a99c0, BW1W120_LINK_TIME, 0x00841000, cv_size)
 
     apply_modules_patch(out_dir, cfg, modules)
 

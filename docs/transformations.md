@@ -155,8 +155,9 @@ now visible in `config/<ver>/config.yml`:
 | | 1.00 | 1.10 | 1.20 |
 |---|---|---|---|
 | link timestamp | `2001-03-09T14:56:38Z` | `2001-06-26T15:07:58Z` | unchanged |
-| `size_of_image` | `0xAE5000` (was `0xAE493E`) | `0xBB5000` (was `0xBB493E`) | unchanged |
-| `force_size` | `0x763000` (was `0x81B58F`) | `0x83202C` (was `0x902A0B`) | `0x84302F` (was `0x843000`) |
+| `size_of_image` | `0xAE4000` (was `0xAE493E`) | `0xBB3000` (was `0xBB493E`) | `0xBC4000` (was `0xBC493E`) |
+| `force_size` | `0x762000` (was `0x81B58F`) | `0x83002C` (was `0x902A0B`) | `0x84102F` (was `0x843000`) |
+| `.rsrc` VA | `0xAE0000` (was `0xAE1000`) | `0xBAF000` (was `0xBB1000`) | `0xBC0000` (was `0xBC2000`) |
 
 The two timestamps had been overwritten with the cleaner's author handle
 (`eYes`); 1.10's recovered value matches `BW1W110_LINK_TIME` in
@@ -166,6 +167,17 @@ link.exe computes them; the old unaligned ones were SafeDisc's. The 1.00/1.10
 `force_size` values used to carry SafeDisc's entire appended payload, and 1.20's
 cut the file 0x2F bytes short, orphaning the CodeView record the debug directory
 points at.
+
+The `.rsrc` row is the one the build caught rather than the reader. SafeDisc does
+not append its sections, it *inserts* them: `SELFMOD` on 1.00, `.data1` and
+`SELFMOD` on 1.10/1.20, all placed between `.data` and `.rsrc`, which pushes
+`.rsrc` up one page per inserted section. Different counts in three builds of the
+same program is not something one linker does, so the shift is SafeDisc's.
+`compact_dropped_sections()` repacks every section contiguously at its alignment
+and rewrites what pointed into the moved ones — the RESOURCE data directory, each
+`IMAGE_RESOURCE_DATA_ENTRY.OffsetToData`, and the debug record's file pointer at
+the trailing CodeView blob. lld independently lands `.rsrc` at the same address,
+which is the confirmation that this is where link.exe had it.
 
 ## SHA verification
 
