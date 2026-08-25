@@ -173,11 +173,18 @@ not append its sections, it *inserts* them: `SELFMOD` on 1.00, `.data1` and
 `SELFMOD` on 1.10/1.20, all placed between `.data` and `.rsrc`, which pushes
 `.rsrc` up one page per inserted section. Different counts in three builds of the
 same program is not something one linker does, so the shift is SafeDisc's.
-`compact_dropped_sections()` repacks every section contiguously at its alignment
-and rewrites what pointed into the moved ones — the RESOURCE data directory, each
-`IMAGE_RESOURCE_DATA_ENTRY.OffsetToData`, and the debug record's file pointer at
-the trailing CodeView blob. lld independently lands `.rsrc` at the same address,
-which is the confirmation that this is where link.exe had it.
+
+sd2unpack compacts: every section is repacked contiguously at its alignment and
+everything that pointed into a moved one is rewritten — the RESOURCE data
+directory, each `IMAGE_RESOURCE_DATA_ENTRY.OffsetToData`, `SizeOfImage`, and the
+debug record's file pointer at the trailing CodeView blob. lld independently
+lands `.rsrc` at the same address, which is the confirmation that this is where
+link.exe had it.
+
+This repo carried its own `compact_dropped_sections()` for one day before
+sd2unpack took the job over; the two implementations produced byte-identical
+output on all three builds, which is a better cross-check than either alone.
+Doing it in both places would double-shift, so it lives only in sd2unpack now.
 
 ## SHA verification
 
