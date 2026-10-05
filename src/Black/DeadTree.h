@@ -39,7 +39,7 @@ public:
 	// BW1W120 00510a00 BW1M119 010c4e50
 	virtual ~DeadTree();
 	// BW1W120 00510c90 BW1M119 010c67e0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00511370 BW1M119 010c5440
 	virtual uint32_t RemoveResource(RESOURCE_TYPE param_1, uint32_t param_2, GInterfaceStatus* param_3, bool* param_4);
 	// BW1W120 005109f0 BW1M119 010c7200

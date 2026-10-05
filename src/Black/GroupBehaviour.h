@@ -62,7 +62,7 @@ public:
 	// BW1W120 00596190 BW1M119 01103890
 	virtual ~GroupBehaviour();
 	// BW1W120 00596320 BW1M119 01103310
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005985c0 BW1M119 010fe130
 	virtual uint32_t Load(GameOSFile& file);
 	// BW1W120 00598240 BW1M119 010fee10
@@ -108,7 +108,7 @@ public:
 	// BW1W120 0050cc50 BW1M119 inlined
 	virtual ~DanceEditState();
 	// BW1W120 0050cc90 BW1M119 inlined
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 };
 
 class DanceKeyAction : public GameThing

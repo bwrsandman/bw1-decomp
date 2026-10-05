@@ -24,7 +24,7 @@ public:
 	// BW1W120 0055d220 BW1M119 01527650
 	virtual ~SpellForest();
 	// BW1W120 00725500 BW1M119 01528af0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055d210 BW1M119 015277f0
 	virtual char* GetDebugText();
 	// BW1W120 00725d50 BW1M119 01527830

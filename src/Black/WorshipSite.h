@@ -68,7 +68,7 @@ public:
 	// BW1W120 0055dcf0 BW1M119 015ba5a0
 	virtual ~WorshipSite();
 	// BW1W120 0077aa60 BW1M119 015ba240
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055dc50 BW1M119 015bac90
 	virtual void RemoveDance();
 	// BW1W120 0077bd80 BW1M119 015b8190

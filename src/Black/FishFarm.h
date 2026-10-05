@@ -45,7 +45,7 @@ public:
 	// BW1W120 0052c5c0 BW1M119 010e25a0
 	virtual ~FishFarm();
 	// BW1W120 0052c690 BW1M119 010e2530
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0052c850 BW1M119 010e1670
 	virtual GPlayer* GetPlayer();
 	// BW1W120 0052c450 BW1M119 010df950

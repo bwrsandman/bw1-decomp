@@ -33,7 +33,7 @@ public:
 	// BW1W120 0055ebd0 BW1M119 0110e060
 	virtual ~Mist();
 	// BW1W120 00606300 BW1M119 0110ef00
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055eb70 BW1M119 0110e0f0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 0055ebc0 BW1M119 0110e1f0

@@ -34,7 +34,7 @@ public:
 	// BW1W120 0055dae0 BW1M119 015669f0
 	virtual ~TownDesireFlags();
 	// BW1W120 00746a00 BW1M119 01566990
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055da70 BW1M119 0135c610
 	virtual Town* GetTown();
 	// BW1W120 0055dad0 BW1M119 01565810

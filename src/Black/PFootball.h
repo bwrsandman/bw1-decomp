@@ -54,7 +54,7 @@ public:
 	// BW1W120 00643760 BW1M119 inlined
 	virtual ~PPlannedFootball();
 	// BW1W120 00643780 BW1M119 inlined
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 006437b0 BW1M119 inlined
 	virtual MultiMapFixed* CreatePlanned(float param_1);
 };

@@ -32,7 +32,7 @@ public:
 	// BW1W120 0055d170 BW1M119 0152ea60
 	virtual ~OneOffSpellSeed();
 	// BW1W120 0072a420 BW1M119 015300e0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055d140 BW1M119 0152eb30
 	virtual GComputerSeen* GetComputerSeen();
 	// BW1W120 0055d130 BW1M119 0152eaf0

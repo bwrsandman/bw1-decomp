@@ -43,7 +43,7 @@ public:
 	// BW1W120 0043b7b0 BW1M119 010c02d0
 	virtual ~BuildingSite();
 	// BW1W120 0043b960 BW1M119 010bfc60
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0043c0b0 BW1M119 010bed40
 	virtual Town* GetTown();
 	// BW1W120 0043d050 BW1M119 010bc9c0

@@ -30,7 +30,7 @@ public:
 	// BW1W120 00682b50 BW1M119 014072a0
 	virtual ~MagicFireBall();
 	// BW1W120 00682c30 BW1M119 01406ff0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00682bf0 BW1M119 01407210
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00682d20 BW1M119 01406f50

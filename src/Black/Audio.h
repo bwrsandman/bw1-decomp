@@ -32,7 +32,7 @@ public:
 	// BW1W120 00426fa0 BW1M119 011821f0
 	virtual ~GAudio();
 	// BW1W120 00426fe0 BW1M119 01184460
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00426f90 BW1M119 011822d0
 	virtual char* GetDebugText();
 	// BW1W120 00428480 BW1M119 011828a0

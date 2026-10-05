@@ -348,7 +348,7 @@ public:
 	// Override methods
 
 	// BW1W120 0056fb70 BW1M119 01375f80
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00570130 BW1M119 010bfbd0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00570150 BW1M119 010bfc20

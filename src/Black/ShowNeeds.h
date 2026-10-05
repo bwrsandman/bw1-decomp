@@ -26,7 +26,7 @@ public:
 	// BW1W120 0055dd40 BW1M119 0114e4a0
 	virtual ~ShowNeeds();
 	// BW1W120 00719b20 BW1M119 0114dfc0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00719c30 BW1M119 0114dc40
 	virtual GPlayer* GetPlayer();
 	// BW1W120 0055dd30 BW1M119 0114e570

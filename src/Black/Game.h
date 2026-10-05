@@ -294,7 +294,7 @@ public:
 	// BW1W120 0054c330 BW1M119 010e7580
 	virtual void Delete();
 	// BW1W120 0054bfd0 BW1M119 013c9a40
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00550780 BW1M119 010c8970
 	virtual void Dump();
 	// BW1W120 0054b9a0 BW1M119 0109ee50

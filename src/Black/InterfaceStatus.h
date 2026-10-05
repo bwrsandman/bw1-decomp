@@ -74,7 +74,7 @@ public:
 	// BW1W120 005db990 BW1M119 01377020
 	virtual ~GInterfaceStatus();
 	// BW1W120 005dbb00 BW1M119 01376e00
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005dbc20 BW1M119 0105b400
 	virtual GPlayer* GetPlayer();
 	// BW1W120 005dc8f0 BW1M119 01375780

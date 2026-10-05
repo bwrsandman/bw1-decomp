@@ -47,7 +47,7 @@ public:
 	// BW1W120 0077f110 BW1M119 015bdf30
 	virtual ~WorshipSpellIcon();
 	// BW1W120 0077f230 BW1M119 015bde50
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0077f6f0 BW1M119 inlined
 	virtual float MaintainSpell(uint32_t param_1, float param_2);
 	// BW1W120 0077f750 BW1M119 015bd440
@@ -116,7 +116,7 @@ public:
 	// BW1W120 00670960 BW1M119 inlined
 	virtual ~PrayerIcon();
 	// BW1W120 00670980 BW1M119 inlined
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 006709a0 BW1M119 inlined
 	virtual GPlayer* GetPlayer();
 	// BW1W120 006709b0 BW1M119 inlined

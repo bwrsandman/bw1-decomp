@@ -103,7 +103,7 @@ public:
 	// BW1W120 00401630 BW1M119 inlined
 	virtual NewCollide* GetCollideData() { return CollideData; }
 	// BW1W120 0052e2b0 BW1M119 010e60f0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 004220a0 BW1M119 010a8ac0
 	virtual Town* GetTown() { return NULL; }
 	// BW1W120 0052eeb0 BW1M119 010e4630

@@ -28,7 +28,7 @@ public:
 	// BW1W120 005612c0 BW1M119 011680a0
 	virtual ~Whale();
 	// BW1W120 00774c00 BW1M119 01168fc0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005612b0 BW1M119 01168220
 	virtual char* GetDebugText();
 	// BW1W120 007752c0 BW1M119 011682b0

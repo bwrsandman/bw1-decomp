@@ -53,7 +53,7 @@ public:
 	// BW1W120 00462ae0 BW1M119 011bfb50
 	virtual ~Citadel();
 	// BW1W120 00462b90 BW1M119 011c2960
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00462ad0 BW1M119 011bfe10
 	virtual char* GetDebugText();
 	// BW1W120 00463dc0 BW1M119 011bff50

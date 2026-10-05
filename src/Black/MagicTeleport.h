@@ -30,7 +30,7 @@ public:
 	// BW1W120 005fc100 BW1M119 013b8af0
 	virtual ~MagicTeleport();
 	// BW1W120 005fc310 BW1M119 013b8630
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005fc430 BW1M119 013b85f0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 005fccb0 BW1M119 013b7460

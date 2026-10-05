@@ -28,7 +28,7 @@ public:
 	// BW1W120 00534d70 BW1M119 010f4090
 	virtual ~GFootpathNode();
 	// BW1W120 00538970 BW1M119 010ed310
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00534d60 BW1M119 010f4160
 	virtual char* GetDebugText();
 	// BW1W120 00538c10 BW1M119 010ec6c0

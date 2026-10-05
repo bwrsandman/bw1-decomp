@@ -1180,7 +1180,7 @@ void GGame::ClearVariables()
 }
 
 // BW1W120 0054bfd0 BW1M119 013c9a40
-void GGame::ToBeDeleted(int param_1)
+void GGame::ToBeDeleted(int delete_now)
 {
 	DanceLight::CloseBitmaps();
 	delete gesture_system_data_list;

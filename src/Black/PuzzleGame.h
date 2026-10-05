@@ -53,7 +53,7 @@ public:
 	// BW1W120 00561b70 BW1M119 0113c3c0
 	virtual ~PuzzleGame();
 	// BW1W120 006d6ff0 BW1M119 01135110
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00561b60 BW1M119 0113c5e0
 	virtual char* GetDebugText();
 	// BW1W120 006d9d40 BW1M119 0112fc40
@@ -78,7 +78,7 @@ public:
 	// BW1W120 006dddb0 BW1M119 inlined
 	virtual ~ChessGamePuzzle();
 	// BW1W120 006dde30 BW1M119 inlined
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 006ddda0 BW1M119 inlined
 	virtual const char* GetText();
 };
@@ -125,7 +125,7 @@ public:
 	// BW1W120 006de280 BW1M119 inlined
 	virtual ~ChessPion();
 	// BW1W120 006dde40 BW1M119 inlined
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005273b0 BW1M119 inlined
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00422190 BW1M119 inlined

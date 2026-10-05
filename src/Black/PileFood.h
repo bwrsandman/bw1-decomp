@@ -34,7 +34,7 @@ public:
 	// BW1W120 0066e040 BW1M119 011230e0
 	virtual ~PileFood();
 	// BW1W120 0066e100 BW1M119 01122df0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0066f180 BW1M119 011209b0
 	virtual float Get2DRadius();
 	// BW1W120 0066e030 BW1M119 01126830

@@ -108,7 +108,7 @@ void Abode::Delete()
 	Object::Delete();
 }
 
-void Abode::ToBeDeleted(int param_1)
+void Abode::ToBeDeleted(int delete_now)
 {
 	Town* town = GetTown();
 	DeleteDependancys();
@@ -118,7 +118,7 @@ void Abode::ToBeDeleted(int param_1)
 		town->RemoveStructureFromTown(this);
 	}
 	DeleteAbodeSurroundingObjects();
-	MultiMapFixed::ToBeDeleted(param_1);
+	MultiMapFixed::ToBeDeleted(delete_now);
 }
 
 void Abode::DestroyedByBeam()

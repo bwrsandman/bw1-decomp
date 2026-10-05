@@ -53,7 +53,7 @@ public:
 	// BW1W120 0055e3d0 BW1M119 0149ec40
 	virtual ~GComputerPlayer();
 	// BW1W120 00656f20 BW1M119 014b06a0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055e3b0 BW1M119 0149d0b0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 0055e380 BW1M119 014b3440
@@ -140,7 +140,7 @@ public:
 	// BW1W120 0055e2a0 BW1M119 014a4d50
 	virtual ~PlayerActionState();
 	// BW1W120 00650100 BW1M119 014a3620
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 006508e0 BW1M119 014a26e0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00651a20 BW1M119 014a03d0

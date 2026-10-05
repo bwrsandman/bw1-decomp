@@ -45,7 +45,7 @@ public:
 	// BW1W120 0055d080 BW1M119 013c5b00
 	virtual ~MobileObject();
 	// BW1W120 00606f00 BW1M119 013c5900
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00607230 BW1M119 013c51d0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00425be0 BW1M119 010b07e0

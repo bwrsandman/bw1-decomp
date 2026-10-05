@@ -34,7 +34,7 @@ public:
 	// BW1W120 00560f80 BW1M119 01119520
 	virtual ~GParticleContainer();
 	// BW1W120 0063e1d0 BW1M119 0111a0d0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0063e3c0 BW1M119 01000fb0
 	virtual void SetPlayer(GPlayer* param_1);
 	// BW1W120 00560f70 BW1M119 01119690

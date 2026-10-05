@@ -22,7 +22,7 @@ public:
 	// BW1W120 00561070 BW1M119 01507dc0
 	virtual ~ScriptMarker();
 	// BW1W120 0070d970 BW1M119 015080d0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00561060 BW1M119 01507fb0
 	virtual char* GetDebugText();
 	// BW1W120 0070d9f0 BW1M119 01507ff0

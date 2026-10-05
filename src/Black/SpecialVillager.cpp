@@ -12,10 +12,10 @@
 // (unsigned short*) and the call operand can't match. Also a scheduler tie-break: target
 // emits `push eax; mov ecx,esi` (this loaded after the arg push), ours `mov ecx,esi;
 // push eax`. Both resolve once native wchar_t is enabled project-wide (dispatcher/config).
-void SpecialVillager::ToBeDeleted(int param_1)
+void SpecialVillager::ToBeDeleted(int delete_now)
 {
 	MakeHimSpeak(NULL);
-	Villager::ToBeDeleted(param_1);
+	Villager::ToBeDeleted(delete_now);
 }
 
 // BW1W120 0071f470 BW1M119 0114f270

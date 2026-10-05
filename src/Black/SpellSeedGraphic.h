@@ -46,7 +46,7 @@ public:
 	// BW1W120 00726e50 BW1M119 01528be0
 	virtual ~SpellSeedGraphic();
 	// BW1W120 00726fe0 BW1M119 0152a830
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 007276a0 BW1M119 01529ba0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 007276b0 BW1M119 01529af0

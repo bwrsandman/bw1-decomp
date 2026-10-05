@@ -30,7 +30,7 @@ public:
 	// BW1W120 0072b480 BW1M119 0153cd30
 	virtual ~SpellShield();
 	// BW1W120 0072b500 BW1M119 0153bfd0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0072b450 BW1M119 0153ac60
 	virtual float GetRadius();
 	// BW1W120 0072b440 BW1M119 0153acc0

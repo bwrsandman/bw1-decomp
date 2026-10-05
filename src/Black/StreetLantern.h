@@ -29,7 +29,7 @@ public:
 	// BW1W120 00561470 BW1M119 0153e0a0
 	virtual ~GStreetLantern();
 	// BW1W120 00734ab0 BW1M119 0153d830
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00561460 BW1M119 0153d290
 	virtual char* GetDebugText();
 	// BW1W120 00734be0 BW1M119 0153d590

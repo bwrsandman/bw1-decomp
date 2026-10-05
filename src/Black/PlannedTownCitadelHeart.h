@@ -24,7 +24,7 @@ public:
 	// BW1W120 00467e60 BW1M119 011c9800
 	virtual ~PlannedTownCitadelHeart();
 	// BW1W120 00467e80 BW1M119 011c5830
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00467e50 BW1M119 011c99c0
 	virtual char* GetDebugText();
 	// BW1W120 00467ff0 BW1M119 011c53f0

@@ -52,7 +52,7 @@ public:
 	// BW1W120 0052a310 BW1M119 010de920
 	virtual ~FireFly();
 	// BW1W120 0052a4c0 BW1M119 010de7f0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0052a300 BW1M119 010db2f0
 	virtual char* GetDebugText();
 	// BW1W120 0052bbc0 BW1M119 010db470

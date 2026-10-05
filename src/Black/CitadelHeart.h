@@ -118,7 +118,7 @@ public:
 	// BW1W120 00464bc0 BW1M119 011c87d0
 	virtual ~CitadelHeart();
 	// BW1W120 00464c50 BW1M119 011c8570
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00468020 BW1M119 01078550
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00464bb0 BW1M119 011c9da0

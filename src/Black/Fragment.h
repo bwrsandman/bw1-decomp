@@ -41,7 +41,7 @@ public:
 	// BW1W120 0076e9a0 BW1M119 01162c00
 	virtual ~Fragment();
 	// BW1W120 0076ea70 BW1M119 01164260
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0076e990 BW1M119 01162e60
 	virtual char* GetDebugText();
 	// BW1W120 0076f6a0 BW1M119 01163180

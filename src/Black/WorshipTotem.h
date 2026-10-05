@@ -45,7 +45,7 @@ public:
 	// BW1W120 00780810 BW1M119 015be3e0
 	virtual ~WorshipTotem();
 	// BW1W120 007808e0 BW1M119 015bf440
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00780800 BW1M119 015be670
 	virtual char* GetDebugText();
 	// BW1W120 00780f10 BW1M119 015be820

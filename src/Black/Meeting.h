@@ -24,7 +24,7 @@ public:
 	// BW1W120 00606160 BW1M119 inlined
 	virtual ~Meeting();
 	// BW1W120 00606180 BW1M119 inlined
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00606230 BW1M119 inlined
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00606150 BW1M119 inlined

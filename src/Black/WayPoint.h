@@ -19,7 +19,7 @@ public:
 	// BW1W120 00770b50 BW1M119 01167ec0
 	virtual ~WayPoint();
 	// BW1W120 00770c00 BW1M119 01167c40
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00770b30 BW1M119 01167990
 	virtual char* GetDebugText();
 	// BW1W120 00770b20 BW1M119 01167950

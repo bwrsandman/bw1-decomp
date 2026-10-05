@@ -26,7 +26,7 @@ public:
 	// BW1W120 0043d1b0 BW1M119 010c17b0
 	virtual ~CitadelBuildingSite();
 	// BW1W120 0043d220 BW1M119 010bc340
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0043d320 BW1M119 010bc100
 	virtual uint32_t GetResource(RESOURCE_TYPE param_1);
 	// BW1W120 0043d360 BW1M119 010bbf90

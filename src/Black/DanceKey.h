@@ -25,7 +25,7 @@ public:
 	// BW1W120 0050ebd0 BW1M119 01100e10
 	virtual ~DanceKeyFrame();
 	// BW1W120 0050ebf0 BW1M119 012b1300
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0050ebc0 BW1M119 012b00e0
 	virtual char* GetDebugText();
 	// BW1W120 0050f2f0 BW1M119 012b0120

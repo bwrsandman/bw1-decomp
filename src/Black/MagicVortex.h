@@ -62,7 +62,7 @@ public:
 	// BW1W120 005fe7f0 BW1M119 013bff10
 	virtual ~LandscapeVortex();
 	// BW1W120 005fe8f0 BW1M119 013be610
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00600210 BW1M119 013bbc90
 	virtual uint32_t Load(GameOSFile& file);
 	// BW1W120 00600000 BW1M119 013bc060
@@ -129,7 +129,7 @@ public:
 	// BW1W120 005fd7b0 BW1M119 013c1b00
 	virtual ~LandscapeVortexIn();
 	// BW1W120 005fd860 BW1M119 013c09a0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005fd7a0 BW1M119 013c1c00
 	virtual char* GetDebugText();
 	// BW1W120 00600550 BW1M119 013bba70
@@ -158,7 +158,7 @@ public:
 	// BW1W120 005fdde0 BW1M119 013c19b0
 	virtual ~LandscapeVortexOut();
 	// BW1W120 005fdf10 BW1M119 013bfb40
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005fddd0 BW1M119 013c1ab0
 	virtual char* GetDebugText();
 	// BW1W120 00600880 BW1M119 013bb240

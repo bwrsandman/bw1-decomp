@@ -173,7 +173,7 @@ public:
 	// BW1W120 004749f0 BW1M119 011753b0
 	virtual ~Living();
 	// BW1W120 005ec0a0 BW1M119 0138b460
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 004172d0 BW1M119 01006720
 	virtual bool32_t IsFunctional();
 	// BW1W120 005ee960 BW1M119 013858a0

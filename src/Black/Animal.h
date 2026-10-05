@@ -57,7 +57,7 @@ public:
 	// BW1W120 004178a0 BW1M119 01174cd0
 	virtual ~Animal();
 	// BW1W120 00417b60 BW1M119 01174d70
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0071be10 BW1M119 01517730
 	virtual uint32_t GetGuidanceResourceType();
 	// BW1W120 0041b710 BW1M119 0116daa0

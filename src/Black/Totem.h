@@ -38,7 +38,7 @@ public:
 	// BW1W120 00737410 BW1M119 0154c480
 	virtual void Delete();
 	// BW1W120 00737430 BW1M119 0154c400
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00561570 BW1M119 0154b720
 	virtual char* GetDebugText();
 	// BW1W120 00737800 BW1M119 0154b890

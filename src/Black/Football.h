@@ -79,7 +79,7 @@ public:
 	// BW1W120 00531330 BW1M119 012bbf00
 	virtual ~Football();
 	// BW1W120 00531360 BW1M119 012c0c20
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00532220 BW1M119 012bf2b0
 	virtual float GetVillagerActivityDesire(Villager* param_1);
 	// BW1W120 00532190 BW1M119 012bf3e0

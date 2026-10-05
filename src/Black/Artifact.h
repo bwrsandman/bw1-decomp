@@ -32,7 +32,7 @@ public:
 	// BW1W120 00425d80 BW1M119 010b0ae0
 	virtual ~TownArtifact();
 	// BW1W120 00425e70 BW1M119 010b2410
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00425d40 BW1M119 010b0b70
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00425d50 BW1M119 010b0bb0

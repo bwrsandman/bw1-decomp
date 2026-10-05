@@ -28,7 +28,7 @@ public:
 	// BW1W120 0055df60 BW1M119 015aaba0
 	virtual ~WeatherThing();
 	// BW1W120 00774130 BW1M119 015abd50
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055df50 BW1M119 015aad40
 	virtual char* GetDebugText();
 	// BW1W120 007747e0 BW1M119 015aad80

@@ -78,7 +78,7 @@ public:
 	// BW1W120 0071fb10 BW1M119 01310f00
 	virtual ~Spell();
 	// BW1W120 0071fd90 BW1M119 01520dd0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055cdf0 BW1M119 010d89a0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 0055cdc0 BW1M119 013b9b80

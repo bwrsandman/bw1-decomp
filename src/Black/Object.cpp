@@ -173,9 +173,9 @@ Object::~Object()
 	}
 }
 
-void Object::ToBeDeleted(int param_1)
+void Object::ToBeDeleted(int delete_now)
 {
-	GameThingWithPos::ToBeDeleted(param_1);
+	GameThingWithPos::ToBeDeleted(delete_now);
 	if (fire_effect != NULL)
 	{
 		fire_effect->ToBeDeleted(0);

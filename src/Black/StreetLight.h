@@ -24,7 +24,7 @@ public:
 	// BW1W120 00561420 BW1M119 0153e310
 	virtual ~GStreetLight();
 	// BW1W120 00734e00 BW1M119 0153ea20
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005613d0 BW1M119 0153e3b0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00561410 BW1M119 0153e4b0

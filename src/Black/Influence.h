@@ -50,7 +50,7 @@ public:
 	// BW1W120 0055ec70 BW1M119 01104e10
 	virtual ~InfluenceRing();
 	// BW1W120 005cd8a0 BW1M119 01105da0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055ec40 BW1M119 010467f0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 0055ec10 BW1M119 01104f10

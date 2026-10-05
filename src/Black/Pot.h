@@ -41,7 +41,7 @@ public:
 	// BW1W120 0055d5c0 BW1M119 01125c00
 	virtual ~Pot();
 	// BW1W120 0066d110 BW1M119 01125b70
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0066d2b0 BW1M119 01004160
 	virtual uint32_t JustAddResource(RESOURCE_TYPE type, uint32_t amount, bool param_3);
 	// BW1W120 0066d410 BW1M119 01124f00

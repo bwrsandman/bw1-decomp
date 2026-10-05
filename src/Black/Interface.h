@@ -107,7 +107,7 @@ public:
 	// BW1W120 005ce310 BW1M119 01363e50
 	virtual ~GInterface();
 	// BW1W120 005ce480 BW1M119 01363bb0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005cec50 BW1M119 01362d00
 	virtual int Get3DSoundPos(LHPoint* param_1);
 	// BW1W120 005ce2c0 BW1M119 0106b890

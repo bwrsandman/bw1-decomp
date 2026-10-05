@@ -32,7 +32,7 @@ public:
 	// BW1W120 00727fc0 BW1M119 01535320
 	virtual ~SpellSeed();
 	// BW1W120 00728280 BW1M119 01534b90
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00727fb0 BW1M119 01535540
 	virtual char* GetDebugText();
 	// BW1W120 00729fb0 BW1M119 01530530

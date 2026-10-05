@@ -276,7 +276,7 @@ public:
 	// BW1W120 00474100 BW1M119 011e5f30
 	virtual ~Creature();
 	// BW1W120 00474f00 BW1M119 011e6910
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00473f20 BW1M119 010a4810
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00473f30 BW1M119 011ea2d0
@@ -868,7 +868,7 @@ public:
 	// BW1W120 inlined BW1M119 010c36c0
 	virtual ~Creed() {}
 	// BW1W120 0050b3d0 BW1M119 010c3ae0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0050b360 BW1M119 010c3800
 	virtual char* GetDebugText();
 	// BW1W120 0050b4e0 BW1M119 010c3890

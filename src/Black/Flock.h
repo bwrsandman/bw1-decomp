@@ -61,7 +61,7 @@ public:
 	// BW1W120 0052f920 BW1M119 010e7890
 	virtual ~Flock();
 	// BW1W120 0052ffb0 BW1M119 010e9bf0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0052f870 BW1M119 010e7950
 	virtual Town* GetTown();
 	// BW1W120 0052f910 BW1M119 010e7c10

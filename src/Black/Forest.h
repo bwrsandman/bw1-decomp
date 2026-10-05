@@ -44,7 +44,7 @@ public:
 	// BW1W120 00539b20 BW1M119 010f8680
 	virtual ~Forest();
 	// BW1W120 00539c60 BW1M119 010fb5d0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00539ae0 BW1M119 010f8aa0
 	virtual bool32_t IsFootpathLink();
 	// BW1W120 00539af0 BW1M119 010f8ae0

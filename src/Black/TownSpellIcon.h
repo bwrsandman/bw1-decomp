@@ -32,7 +32,7 @@ public:
 	// BW1W120 0055e070 BW1M119 0156abe0
 	virtual ~TownSpellIcon();
 	// BW1W120 00748ae0 BW1M119 0156ab30
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00748b90 BW1M119 0156aa90
 	virtual GPlayer* GetPlayer();
 	// BW1W120 0055e040 BW1M119 01569ae0
@@ -62,7 +62,7 @@ public:
 	// BW1W120 0055e0c0 BW1M119 0156a870
 	virtual ~TownCentreSpellIcon();
 	// BW1W120 00748c80 BW1M119 0156a780
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055e0b0 BW1M119 01569aa0
 	virtual char* GetDebugText();
 	// BW1W120 007490e0 BW1M119 01569b20

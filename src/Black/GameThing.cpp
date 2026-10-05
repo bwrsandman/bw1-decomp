@@ -101,12 +101,12 @@ void GameThing::ProcessDeadList(int param_1)
 	};
 }
 
-void GameThing::ToBeDeleted(int param_1)
+void GameThing::ToBeDeleted(int delete_now)
 {
 	if ((Flags & GAME_THING_FLAG_UNAVAILABLE) == 0)
 	{
 		Flags |= GAME_THING_FLAG_UNAVAILABLE;
-		if (param_1)
+		if (delete_now)
 		{
 			Delete();
 			return;
@@ -162,10 +162,10 @@ void GameThing::SaveExtraData(GameOSFile& file)
 	file.WriteSafe(zero);
 }
 
-void GameThingWithPos::ToBeDeleted(int param_1)
+void GameThingWithPos::ToBeDeleted(int delete_now)
 {
-	CleanupWhenDeleted(param_1);
-	GameThing::ToBeDeleted(param_1);
+	CleanupWhenDeleted(delete_now);
+	GameThing::ToBeDeleted(delete_now);
 }
 
 int GameThingWithPos::Get3DSoundPos(LHPoint* pos)

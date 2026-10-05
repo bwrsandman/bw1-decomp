@@ -19,7 +19,7 @@ public:
 	// BW1W120 0072d990 BW1M119 01536890
 	virtual ~SpellStormAndTornado();
 	// BW1W120 0072da20 BW1M119 01537090
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0072d960 BW1M119 015369e0
 	virtual float GetRadius();
 	// BW1W120 0072d950 BW1M119 01536980

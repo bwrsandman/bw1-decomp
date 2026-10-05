@@ -52,7 +52,7 @@ public:
 	// BW1W120 0072eae0 BW1M119 011587b0
 	virtual ~FireEffect();
 	// BW1W120 0072ebe0 BW1M119 01158400
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0072ee70 BW1M119 01158090
 	virtual int Get3DSoundPos(LHPoint* param_1);
 	// BW1W120 0072eab0 BW1M119 01154cd0

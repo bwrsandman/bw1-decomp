@@ -38,7 +38,7 @@ public:
 	// BW1W120 00469500 BW1M119 011cad30
 	virtual ~CitadelPart();
 	// BW1W120 00469540 BW1M119 011cab30
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00469750 BW1M119 010784f0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 004694e0 BW1M119 011cafe0

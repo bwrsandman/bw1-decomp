@@ -56,7 +56,7 @@ public:
 	// BW1W120 0055d480 BW1M119 0152ccb0
 	virtual ~SpellIcon();
 	// BW1W120 007260a0 BW1M119 0152cbe0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00726540 BW1M119 0152bd70
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00726570 BW1M119 0152bce0

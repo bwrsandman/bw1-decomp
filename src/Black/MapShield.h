@@ -33,7 +33,7 @@ public:
 	// BW1W120 0072c050 BW1M119 01538d40
 	virtual ~MapShield();
 	// BW1W120 0072c0f0 BW1M119 0153a0c0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0072c150 BW1M119 0153a050
 	virtual GPlayer* GetPlayer();
 	// BW1W120 0072c040 BW1M119 0153ccf0

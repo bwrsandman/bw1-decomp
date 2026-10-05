@@ -31,7 +31,7 @@ public:
 	// BW1W120 0072cb20 BW1M119 0153c920
 	virtual ~PhysicalShield();
 	// BW1W120 0072cc50 BW1M119 01538b60
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0072cb10 BW1M119 0153ca60
 	virtual char* GetDebugText();
 	// BW1W120 0072c410 BW1M119 01539430

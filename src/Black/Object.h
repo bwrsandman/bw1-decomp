@@ -88,7 +88,7 @@ public:
 	// BW1W120 006366a0 BW1M119 013e0d20
 	virtual void Delete();
 	// BW1W120 00636670 BW1M119 013e0d80
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00639b70 BW1M119 013d9d30
 	virtual float GetDrawImportance();
 	// BW1W120 00419950 BW1M119 010ad7a0

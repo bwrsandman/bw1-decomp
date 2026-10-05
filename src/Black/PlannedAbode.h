@@ -32,7 +32,7 @@ public:
 	// BW1W120 00405110 BW1M119 010b3160
 	virtual ~PlannedAbode();
 	// BW1W120 004056b0 BW1M119 013448c0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 004050e0 BW1M119 0141c550
 	virtual Town* GetTown();
 	// BW1W120 00405100 BW1M119 014afde0

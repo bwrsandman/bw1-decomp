@@ -26,7 +26,7 @@ public:
 	// BW1W120 00560fe0 BW1M119 0114f530
 	virtual ~SpecialVillager();
 	// BW1W120 0071f0c0 BW1M119 0114f770
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00560fd0 BW1M119 0114fc50
 	virtual char* GetDebugText();
 	// BW1W120 0071f5d0 BW1M119 0114ef00

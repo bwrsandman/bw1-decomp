@@ -27,7 +27,7 @@ public:
 	// BW1W120 0077ec70 BW1M119 inlined
 	virtual ~WorshipSiteUpgrade();
 	// BW1W120 0077eca0 BW1M119 inlined
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0077ed80 BW1M119 inlined
 	virtual GPlayer* GetPlayer();
 	// BW1W120 0077ec60 BW1M119 inlined

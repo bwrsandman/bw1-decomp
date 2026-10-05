@@ -34,7 +34,7 @@ public:
 	// BW1W120 00779320 BW1M119 0116c830
 	virtual ~Workshop();
 	// BW1W120 00779480 BW1M119 0116c610
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00779e00 BW1M119 0116b220
 	virtual uint32_t AddResource(RESOURCE_TYPE param_1, uint32_t param_2, GInterfaceStatus* param_3, bool param_4,
 	                             const MapCoords* param_5, int param_6);

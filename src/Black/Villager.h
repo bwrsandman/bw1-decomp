@@ -132,7 +132,7 @@ public:
 	// BW1W120 0055cb40 BW1M119 01579bf0
 	virtual ~Villager();
 	// BW1W120 007521b0 BW1M119 015755c0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 007502f0 BW1M119 01066b50
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00751d50 BW1M119 01057200
@@ -1941,7 +1941,7 @@ public:
 	// BW1W120 00756740 BW1M119 0156d9b0
 	virtual ~MissionaryControl();
 	// BW1W120 00756870 BW1M119 0156d700
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00756700 BW1M119 0149bc10
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00756730 BW1M119 0156c870

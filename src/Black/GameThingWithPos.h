@@ -90,7 +90,7 @@ public:
 	// Override methods
 
 	// BW1W120 0056fe00 BW1M119 0157be90
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0056fe20 BW1M119 01052ad0
 	virtual int Get3DSoundPos(LHPoint* pos);
 	// BW1W120 00570350 BW1M119 01005470

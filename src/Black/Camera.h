@@ -55,7 +55,7 @@ public:
 	// BW1W120 00441b30 BW1M119 013e96b0
 	virtual ~GCamera();
 	// BW1W120 00441ee0 BW1M119 011a32e0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00443840 BW1M119 011a16f0
 	virtual char* GetDebugText();
 	// BW1W120 004433a0 BW1M119 011a1920

@@ -38,7 +38,7 @@ public:
 	// BW1W120 0071e3c0 BW1M119 0151c1b0
 	virtual ~SoundTag();
 	// BW1W120 0071ecb0 BW1M119 0151b5d0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0071ec90 BW1M119 0151b650
 	virtual int Get3DSoundPos(LHPoint* param_1);
 

@@ -25,7 +25,7 @@ public:
 	// BW1W120 005fcf30 BW1M119 013ba1f0
 	virtual ~MagicTree();
 	// BW1W120 005fd070 BW1M119 013ba6b0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 005fd060 BW1M119 013ba790
 	virtual GPlayer* GetPlayer();
 	// BW1W120 005fcf20 BW1M119 013ba300

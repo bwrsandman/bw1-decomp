@@ -26,7 +26,7 @@ public:
 	// BW1W120 0055e010 BW1M119 010fd5a0
 	virtual ~Graveyard();
 	// BW1W120 00595cb0 BW1M119 010fe070
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055e000 BW1M119 010fd820
 	virtual char* GetDebugText();
 	// BW1W120 00595f50 BW1M119 010fd860

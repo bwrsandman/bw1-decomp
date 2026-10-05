@@ -31,7 +31,7 @@ public:
 	// BW1W120 00561220 BW1M119 01169330
 	virtual ~Wonder();
 	// BW1W120 00778e40 BW1M119 01169e60
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00561210 BW1M119 01169570
 	virtual char* GetDebugText();
 	// BW1W120 007790f0 BW1M119 01169710

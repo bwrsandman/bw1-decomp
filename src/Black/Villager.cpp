@@ -713,7 +713,7 @@ Abode* Villager::GetAbode()
 }
 
 // BW1W120 007521b0 BW1M119 015755c0
-void Villager::ToBeDeleted(int param_1) {}
+void Villager::ToBeDeleted(int delete_now) {}
 
 // BW1W120 007521d0 BW1M119 0104dce0
 uint32_t Villager::CallState()

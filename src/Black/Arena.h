@@ -33,7 +33,7 @@ public:
 	// BW1W120 004247c0 BW1M119 010afe60
 	virtual ~GArena();
 	// BW1W120 00424960 BW1M119 010af2a0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00424780 BW1M119 0102a940
 	virtual float GetRadius();
 	// BW1W120 004247b0 BW1M119 010aff70
@@ -61,7 +61,7 @@ public:
 	// BW1W120 00425350 BW1M119 010adf60
 	virtual ~ArenaSpellIcon();
 	// BW1W120 00425600 BW1M119 010adb60
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00425330 BW1M119 010ad580
 	virtual char* GetDebugText();
 	// BW1W120 004257d0 BW1M119 010ad7d0

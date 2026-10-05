@@ -35,7 +35,7 @@ public:
 	// BW1W120 00709870 BW1M119 015032f0
 	virtual ~ScriptHighlight();
 	// BW1W120 00709980 BW1M119 01503130
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00709860 BW1M119 015016b0
 	virtual char* GetDebugText();
 	// BW1W120 0070a8f0 BW1M119 01502260

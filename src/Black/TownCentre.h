@@ -47,7 +47,7 @@ public:
 	// BW1W120 0055dbb0 BW1M119 015651c0
 	virtual ~TownCentre();
 	// BW1W120 00743b40 BW1M119 01565000
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055dba0 BW1M119 01565670
 	virtual char* GetDebugText();
 	// BW1W120 00744880 BW1M119 01563370

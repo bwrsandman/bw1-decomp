@@ -36,7 +36,7 @@ public:
 	// BW1W120 004011c0 BW1M119 01333120
 	virtual void Delete() { delete this; }
 	// BW1W120 004011d0 BW1M119 01333480
-	virtual void ToBeDeleted(int param_1) { Delete(); }
+	virtual void ToBeDeleted(int delete_now) { Delete(); }
 	// BW1W120 004011e0 BW1M119 01334c10
 	virtual int Get3DSoundPos(LHPoint* param_1) { return 0; }
 	// BW1W120 004011f0 BW1M119 013348b0

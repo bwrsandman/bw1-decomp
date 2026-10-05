@@ -251,7 +251,7 @@ MultiMapFixed::~MultiMapFixed()
 	}
 }
 
-void MultiMapFixed::ToBeDeleted(int param_1)
+void MultiMapFixed::ToBeDeleted(int delete_now)
 {
 	Reaction::RemoveAllReactionsInitiatedByObject(this);
 	if (GetFootpathLink() != NULL)
@@ -266,10 +266,10 @@ void MultiMapFixed::ToBeDeleted(int param_1)
 	}
 	if (building_site != NULL)
 	{
-		building_site->ToBeDeleted(param_1);
+		building_site->ToBeDeleted(delete_now);
 		SetBuildingSite(NULL);
 	}
-	Object::ToBeDeleted(param_1);
+	Object::ToBeDeleted(delete_now);
 }
 
 MapCoords MultiMapFixed::GetDoorPos()

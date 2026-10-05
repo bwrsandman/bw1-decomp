@@ -21,7 +21,7 @@ public:
 	// BW1W120 0055de20 BW1M119 0115cd50
 	virtual ~GStream();
 	// BW1W120 00733b10 BW1M119 0115d090
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055de10 BW1M119 0115d5b0
 	virtual char* GetDebugText();
 	// BW1W120 007344e0 BW1M119 0115b8a0

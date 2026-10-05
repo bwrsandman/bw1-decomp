@@ -20,7 +20,7 @@ public:
 	// BW1W120 00469670 BW1M119 011c7900
 	virtual ~PlannedCitadelPart();
 	// BW1W120 00469690 BW1M119 011ca790
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00465590 BW1M119 011c9af0
 	virtual char* GetDebugText();
 	// BW1W120 00469720 BW1M119 011ca650

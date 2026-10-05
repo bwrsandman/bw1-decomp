@@ -25,7 +25,7 @@ public:
 	// BW1W120 00722700 BW1M119 01522080
 	virtual ~SpellDispenser();
 	// BW1W120 007228a0 BW1M119 01523180
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00722fa0 BW1M119 01522430
 	virtual char* GetDebugText();
 	// BW1W120 00722e80 BW1M119 01522490

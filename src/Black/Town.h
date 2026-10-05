@@ -214,7 +214,7 @@ public:
 	virtual char* GetDebugText() { return "Town:"; }
 
 	// BW1W120 00739970 BW1M119 015601d0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0073ff00 BW1M119 01553900
 	virtual float GetVillagerActivityDesire(Villager* villager);
 	// BW1W120 0073ff10 BW1M119 010975f0

@@ -39,7 +39,7 @@ public:
 	// BW1W120 0055d760 BW1M119 013c8b90
 	virtual ~MobileStatic();
 	// BW1W120 00608760 BW1M119 013c8b40
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 006088b0 BW1M119 013c8650
 	virtual GPlayer* GetPlayer();
 	// BW1W120 004396a0 BW1M119 010b6fd0
@@ -173,7 +173,7 @@ public:
 	// BW1W120 0055d7d0 BW1M119 013c5fe0
 	virtual ~GBaseOnly();
 	// BW1W120 006095c0 BW1M119 013c6660
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055d7c0 BW1M119 013c60b0
 	virtual char* GetDebugText();
 	// BW1W120 0055d7b0 BW1M119 013c6070

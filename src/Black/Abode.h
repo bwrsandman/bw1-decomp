@@ -115,7 +115,7 @@ public:
 	// BW1W120 00402c10 BW1M119 01575020
 	virtual void Delete();
 	// BW1W120 00402c60 BW1M119 010b44b0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00405f70 BW1M119 0106f7f0
 	virtual GPlayer* GetPlayer();
 	// BW1W120 00401730 BW1M119 010527c0

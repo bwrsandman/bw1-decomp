@@ -35,7 +35,7 @@ public:
 	// BW1W120 00438e20 BW1M119 010b6510
 	virtual ~BigForest();
 	// BW1W120 00438e60 BW1M119 010b6260
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 004390d0 BW1M119 010b58e0
 	virtual uint32_t RemoveResource(RESOURCE_TYPE param_1, uint32_t param_2, GInterfaceStatus* param_3, bool* param_4);
 	// BW1W120 00438e10 BW1M119 010b5110

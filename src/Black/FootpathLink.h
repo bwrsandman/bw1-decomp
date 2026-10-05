@@ -28,7 +28,7 @@ public:
 	// Override methods
 
 	// BW1W120 00536010 BW1M119 010f1aa0
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00536070 BW1M119 010f1960
 	virtual uint32_t AddFootpath(GFootpath* param_1);
 	// BW1W120 005360b0 BW1M119 010f1850

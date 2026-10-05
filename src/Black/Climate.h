@@ -27,7 +27,7 @@ public:
 	// BW1W120 0055dee0 BW1M119 015a9660
 	virtual ~GClimate();
 	// BW1W120 007713e0 BW1M119 015a9410
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055ded0 BW1M119 015a5f10
 	virtual char* GetDebugText();
 	// BW1W120 007736e0 BW1M119 015a5f50

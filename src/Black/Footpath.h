@@ -32,7 +32,7 @@ public:
 	// BW1W120 00534e00 BW1M119 010f3cd0
 	virtual ~GFootpath();
 	// BW1W120 00534f00 BW1M119 010f3910
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 00534df0 BW1M119 010f4380
 	virtual char* GetDebugText();
 	// BW1W120 00535f10 BW1M119 010f1c30

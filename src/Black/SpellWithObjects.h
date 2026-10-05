@@ -22,7 +22,7 @@ public:
 	// BW1W120 0055cf80 BW1M119 01310c60
 	virtual ~SpellWithObjects();
 	// BW1W120 00720fd0 BW1M119 0151ea10
-	virtual void ToBeDeleted(int param_1);
+	virtual void ToBeDeleted(int delete_now);
 	// BW1W120 0055cf70 BW1M119 01521560
 	virtual char* GetDebugText();
 	// BW1W120 007210f0 BW1M119 0151e710

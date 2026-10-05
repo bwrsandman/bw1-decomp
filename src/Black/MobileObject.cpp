@@ -62,14 +62,14 @@ MobileObject::~MobileObject()
 	}
 }
 
-void MobileObject::ToBeDeleted(int param_1)
+void MobileObject::ToBeDeleted(int delete_now)
 {
 	GGame::g_game->GameLists.MobileObjects.Remove(this);
 	if (GGame::g_game->GameLists.objects.Contains(this))
 	{
 		GGame::g_game->GameLists.objects.Remove(this);
 	}
-	Object::ToBeDeleted(param_1);
+	Object::ToBeDeleted(delete_now);
 }
 
 void MobileObject::AddMobileObjectCheckSum()

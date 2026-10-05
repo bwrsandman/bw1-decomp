@@ -235,11 +235,11 @@ void Town::DeleteDependancys()
 	MissionaryList.DeleteAll();
 }
 
-void Town::ToBeDeleted(int param_1)
+void Town::ToBeDeleted(int delete_now)
 {
 	if ((GameThing::Flags & GAME_THING_FLAG_UNAVAILABLE) == 0)
 	{
-		GameThingWithPos::ToBeDeleted(param_1);
+		GameThingWithPos::ToBeDeleted(delete_now);
 		DeleteDependancys();
 		GGame::g_game->ForceNeedUpdateInfluence();
 	}
