@@ -25,6 +25,11 @@ struct LH3DVRAMTex
 
 	IDirectDrawSurface7* Surface;
 	LH3DTexture*         Texture;
+
+	// BW1W120 0085dac0 BW1M119 010d1220 (LHCombined Release)
+	static LH3DVRAMTex* AssignTexture(LH3DTexture* texture, int index);
+	// BW1W120 0085dc00 BW1M119 0100c7b0 (LHCombined Release)
+	void LoadInVRAM(IDirectDrawSurface7* surface);
 };
 static_assert(sizeof(LH3DVRAMTex::PixelFormat) == 0x24, "Data type is of wrong size");
 
