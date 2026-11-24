@@ -1631,7 +1631,7 @@ config.libs = [
             Object(NonMatching, "Lionhead/LHLib/ver5.0/LHScript.cpp", progress_category="sdk", extra_cflags=["/GX", "/Ob0"]),
             Object(NonMatching, "Lionhead/LHLib/ver5.0/LHSpriteList.cpp", progress_category="sdk"),
             Object(Matching, "Lionhead/LHLib/ver5.0/LHFlic.cpp", progress_category="sdk"),
-            Object(NonMatching, "Lionhead/LHLib/ver5.0/LHSelfMod.cpp", progress_category="sdk"),
+            Object(Matching, "Lionhead/LHLib/ver5.0/LHSelfMod.cpp", progress_category="sdk"),
             Object(Matching, "Lionhead/LHLib/ver5.0/LHConvert.cpp", progress_category="sdk"),
             Object(NonMatching, "Lionhead/LHLib/ver5.0/LHSprite.cpp", progress_category="sdk"),
             Object(NonMatching, "Lionhead/LHLib/ver5.0/TbIME.cpp", progress_category="sdk", extra_cflags=["/GX"]),
