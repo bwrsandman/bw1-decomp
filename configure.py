@@ -418,13 +418,18 @@ if config.version == "BW1WCI":
         # ___threadhandle, mlock.obj's _lockerr_exit, winsig.obj's signal,
         # winxfltr.obj's _XcptFilter, a_loc.obj's and w_loc.obj's
         # ___crtGetLocaleInfo, and the math error handlers of fpexcept.obj and
-        # ldexp.obj, which are not linked; and LHFile's AllocSegDataMem, the only
-        # user of LHLog's LH_LOG_NO_MEMORY_TEXT, which the DLL does not import
+        # ldexp.obj, which are not linked; LHFile's AllocSegDataMem, the only
+        # user of LHLog's LH_LOG_NO_MEMORY_TEXT, which the DLL does not import;
+        # and LHOSFile's directory, rename, delete and LHLoadData functions (it was
+        # built with /Gy), which zlib's uncompress, not linked, and the file
+        # functions below only serve
         *(f"/alternatename:{_name}=__imp__ExitProcess@4" for _name in (
             "__imp__CreateThread@24", "__imp__ResumeThread@4", "__imp__GetCurrentThread@0",
             "__imp__FatalAppExitA@8", "__imp__SetConsoleCtrlHandler@8", "__imp__UnhandledExceptionFilter@4",
-            "__imp__GetLocaleInfoA@16", "__imp__GetLocaleInfoW@16", "__imp_?LH_LOG_NO_MEMORY_TEXT@@3PADA")),
-        *(f"/alternatename:{_name}=_abort" for _name in ("__except1", "__except2", "__handle_qnan1", "__handle_qnan2", "_ldexp")),
+            "__imp__GetLocaleInfoA@16", "__imp__GetLocaleInfoW@16", "__imp_?LH_LOG_NO_MEMORY_TEXT@@3PADA",
+            "__imp__FindFirstFileA@8", "__imp__FindNextFileA@8", "__imp__FindClose@4", "__imp__MoveFileA@8",
+            "__imp__DeleteFileA@4", "__imp__CoFileTimeToDosDateTime@12")),
+        *(f"/alternatename:{_name}=_abort" for _name in ("__except1", "__except2", "__handle_qnan1", "__handle_qnan2", "_ldexp", "_uncompress")),
     ]
 # The links whose image link.exe built with /OPT:ICF: LHLog's in every version,
 # runblack 1.00's (built with /Gy, below) and Creature Isle's LHAudio. Every other
@@ -435,6 +440,9 @@ if config.version == "BW1W100":
     config.icf_links.append("runblack")
 if config.version == "BW1WCI":
     config.icf_links.append("LHAudio")
+    # Built with /Gy, the LHFile and LHAudio units' static LHLogDebugBreak copies are COMDATs:
+    # the fold kept LHOSFile's, which every other unit calls.
+    config.icf_static_folds["LHAudio"] = ["?LHLogDebugBreak@@YAXXZ"]
 config.reconfig_deps = []
 
 # Post-link patch: applies version-specific binary fixups after linking,
@@ -708,6 +716,10 @@ if config.version == "BW1W100":
 
 # The LHFile library objects LHaudiodllR.dll links.
 cflags_lhfile_audio = [f for f in cflags_lhaudio if f != "/DLH_AUDIO_EXPORTS"]
+# Creature Isle's was built with /Gy: the DLL's /OPT:REF link dropped every LHOSFile function
+# nothing calls (Position, Seek, Write, the directory functions, LHLoadData and LHSaveData).
+if config.version == "BW1WCI":
+    cflags_lhfile_audio.append("/Gy")
 
 # The zlib 1.1.3 objects it links for LHFile's compressed segments: the inflate side only.
 # The DLL is the same file in every version, so src/zlib's 1.00 executable cuts stay out.
@@ -1865,7 +1877,7 @@ config.libs = [
             AudioObject(Matching, "Lionhead/LHAudio/ver7.0/Version.cpp"),
             # LHFile ver3.0, built with asserts, linked from its static library.
             Object(Matching, "LHAudio/LHFile/ver3.0/LHFile.cpp", source="Lionhead/LHFile/ver3.0/LHFile.cpp", cflags=cflags_lhfile_audio),
-            Object(MatchingFor("BW1W100", "BW1W110", "BW1W120", "BW1W130"), "LHAudio/LHFile/ver3.0/LHOSFile.cpp", source="Lionhead/LHFile/ver3.0/LHOSFile.cpp", cflags=cflags_lhfile_audio),
+            Object(Matching, "LHAudio/LHFile/ver3.0/LHOSFile.cpp", source="Lionhead/LHFile/ver3.0/LHOSFile.cpp", cflags=cflags_lhfile_audio),
             Object(MatchingFor("BW1W100", "BW1W110", "BW1W120", "BW1W130"), "LHAudio/zlib/uncompr.c", source="zlib/uncompr.c", cflags=cflags_zlib_audio, progress_category="sdk"),
             Object(MatchingFor("BW1W100", "BW1W110", "BW1W120", "BW1W130"), "LHAudio/zlib/inflate.c", source="zlib/inflate.c", cflags=cflags_zlib_audio, progress_category="sdk"),
             Object(MatchingFor("BW1W100", "BW1W110", "BW1W120", "BW1W130"), "LHAudio/zlib/infblock.c", source="zlib/infblock.c", cflags=cflags_zlib_audio, progress_category="sdk"),

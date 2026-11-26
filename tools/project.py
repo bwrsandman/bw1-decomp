@@ -225,6 +225,9 @@ class ProjectConfig:
         # every candidate in the link, so their recompiled units are folded onto
         # the split's copies (`dtk coff fold`) instead of linked as compiled (PE).
         self.icf_links: List[str] = []
+        # Per ICF link, the static (file-local) functions /OPT:ICF folded across units onto one
+        # copy that the split names as a global function (tools/fold-statics.py).
+        self.icf_static_folds: Dict[str, List[str]] = {}
         self.asflags: Optional[List[str]] = None  # Assembler flags
         self.ldflags: Optional[List[str]] = None  # Linker flags
         self.libs: Optional[List[Library]] = None  # List of libraries
@@ -1104,7 +1107,7 @@ def generate_build_ninja(
         n.comment("Fold a recompiled unit's COMDATs onto the image's copies in an ICF link (see icf_links)")
         n.rule(
             name="fold",
-            command=f"{dtk} coff fold $in $config --unit $unit $fold_args -o $out",
+            command=f"{CHAIN}{dtk} coff fold $in $config --unit $unit $fold_args -o $out$fold_statics",
             description="FOLD $out",
         )
         n.newline()
@@ -1800,15 +1803,32 @@ def generate_build_ninja(
                     if link_step.module_id != 0:
                         config_dir = config_dir / link_step.name
                         fold_args = f"--module {link_step.name}"
+                    # The static functions link.exe folded across units (see icf_static_folds).
+                    fold_statics = ""
+                    static_folds = config.icf_static_folds.get(link_step.name, [])
+                    if static_folds:
+                        fold_statics = (
+                            f" && $python tools/fold-statics.py {serialize_path(folded)}"
+                            f" --symbols {serialize_path(config_dir / 'symbols.txt')}"
+                            f" --splits {serialize_path(config_dir / 'splits.txt')} --unit {obj.name}"
+                            + "".join(f' --function "{name.replace("$", "$$")}"' for name in static_folds)
+                        )
                     n.build(
                         outputs=folded,
                         rule="fold",
                         inputs=built_obj_path,
-                        implicit=[dtk, config.config_path, config_dir / "symbols.txt", config_dir / "splits.txt"],
+                        implicit=[
+                            dtk,
+                            config.config_path,
+                            config_dir / "symbols.txt",
+                            config_dir / "splits.txt",
+                            *([Path("tools/fold-statics.py")] if static_folds else []),
+                        ],
                         variables={
                             "unit": obj.name,
                             "config": serialize_path(config.config_path),
                             "fold_args": fold_args,
+                            "fold_statics": fold_statics,
                         },
                     )
                     built_obj_path = folded
